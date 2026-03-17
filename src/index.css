@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 50% 97%;
+    --foreground: 215 47% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 47% 17%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 47% 17%;
+    --primary: 0 100% 70%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 45 100% 62%;
+    --secondary-foreground: 215 47% 17%;
+    --muted: 36 33% 92%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 214 100% 65%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 36 20% 90%;
+    --input: 36 20% 90%;
+    --ring: 0 100% 70%;
+    --radius: 20px;
+
+    --brand-coral: 0 100% 70%;
+    --brand-yellow: 45 100% 62%;
+    --brand-sky: 214 100% 65%;
+    --brand-fresh: 134 52% 61%;
+    --bg-cream: 36 100% 95%;
+    --bg-page: 36 50% 97%;
+    --text-dark: 215 47% 17%;
+
+    --gradient-primary: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 100%);
+    --gradient-creative: linear-gradient(135deg, #4D96FF 0%, #6BCB77 100%);
+    --gradient-warm: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 50%, #FFD93D 100%);
+
+    --shadow-soft: 0 0 0 1px rgba(0,0,0,.02), 0 2px 4px rgba(0,0,0,.02), 0 12px 24px rgba(0,0,0,.04);
+    --shadow-hover: 0 0 0 1px rgba(0,0,0,.02), 0 4px 8px rgba(0,0,0,.04), 0 20px 40px rgba(0,0,0,.08);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 215 47% 17%;
+    --sidebar-primary: 0 100% 70%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 36 33% 92%;
+    --sidebar-accent-foreground: 215 47% 17%;
+    --sidebar-border: 36 20% 90%;
+    --sidebar-ring: 214 100% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Quicksand', sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Nunito', sans-serif;
+    @apply font-bold tracking-tight;
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-soft);
+    @apply border border-white/20;
+  }
+  .shadow-art {
+    box-shadow: var(--shadow-soft);
+  }
+  .shadow-art-hover {
+    box-shadow: var(--shadow-hover);
+  }
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .gradient-creative {
+    background: var(--gradient-creative);
+  }
+  .gradient-warm {
+    background: var(--gradient-warm);
+  }
+}
