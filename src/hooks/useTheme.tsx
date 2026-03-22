@@ -7,7 +7,7 @@ export function useTheme() {
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window === "undefined") return "system";
     const savedTheme = localStorage.getItem("theme") as Theme | null;
-    return savedTheme || "light";
+    return savedTheme || "dark";
   });
 
   const setTheme = useCallback((newTheme: Theme) => {
