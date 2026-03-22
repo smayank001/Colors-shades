@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { createEnquiry } from '@/mock-api/db';
+import { addEnquiry } from '@/api';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -32,19 +32,21 @@ export function EnquiryModal({ open, onClose, courseSlug = '', courseTitle = '' 
     resolver: zodResolver(enquirySchema),
   });
 
-  const onSubmit = (data: EnquiryFormData) => {
-    createEnquiry({
-      name: data.name,
-      phone: data.phone,
-      email: data.email,
-      message: data.message || '',
-      course_slug: courseSlug,
-      payment_screenshot_url: '',
-      paid_flag: false,
-    });
-    toast.success('Enquiry submitted successfully! We will contact you soon.');
-    reset();
-    onClose();
+  const onSubmit = async (data: EnquiryFormData) => {
+    try {
+      await addEnquiry({
+        name: data.name,
+        phone: data.phone,
+        email: data.email, // backend might not use email, but we send it
+        message: data.message || '',
+        course: courseTitle || courseSlug || 'General Inquiry',
+      });
+      toast.success('Enquiry submitted successfully! We will contact you soon.');
+      reset();
+      onClose();
+    } catch (e: any) {
+      toast.error(e.message || 'Failed to submit enquiry');
+    }
   };
 
   return (
@@ -55,52 +57,52 @@ export function EnquiryModal({ open, onClose, courseSlug = '', courseTitle = '' 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-foreground/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#020617]/90 backdrop-blur-xl"
             onClick={onClose}
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative bg-card rounded-2xl shadow-hover p-6 sm:p-8 w-full max-w-md z-10"
+            className="relative bg-[#1E293B] backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(239,68,68,0.1)] p-6 sm:p-8 w-full max-w-md z-10"
             role="dialog"
             aria-modal="true"
             aria-label="Enquiry form"
           >
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-1 rounded-full hover:bg-muted transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-full bg-white/5 hover:bg-white/10 hover:text-[#EF4444] transition-colors"
               aria-label="Close"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <h2 className="font-heading text-2xl font-bold mb-1">Send an Enquiry</h2>
+            <h2 className="font-heading text-2xl font-bold mb-1 text-foreground">Send an Enquiry</h2>
             {courseTitle && (
-              <p className="text-sm text-muted-foreground mb-6">For: {courseTitle}</p>
+              <p className="text-sm text-[#EF4444] mb-6 font-medium">For: {courseTitle}</p>
             )}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <Label htmlFor="name">Name *</Label>
-                <Input id="name" {...register('name')} className="mt-1 rounded-xl" />
-                {errors.name && <p className="text-sm text-destructive mt-1">{errors.name.message}</p>}
+                <Label htmlFor="name" className="text-white/80 font-medium">Name *</Label>
+                <Input id="name" {...register('name')} className="mt-1 rounded-xl bg-black/40 border-white/10 focus:ring-2 focus:ring-brand-sky/50 text-white" />
+                {errors.name && <p className="text-sm text-brand-coral mt-1">{errors.name.message}</p>}
               </div>
               <div>
-                <Label htmlFor="phone">Phone *</Label>
-                <Input id="phone" {...register('phone')} className="mt-1 rounded-xl" />
-                {errors.phone && <p className="text-sm text-destructive mt-1">{errors.phone.message}</p>}
+                <Label htmlFor="phone" className="text-white/80 font-medium">Phone *</Label>
+                <Input id="phone" {...register('phone')} className="mt-1 rounded-xl bg-black/40 border-white/10 focus:ring-2 focus:ring-brand-sky/50 text-white" />
+                {errors.phone && <p className="text-sm text-brand-coral mt-1">{errors.phone.message}</p>}
               </div>
               <div>
-                <Label htmlFor="email">Email *</Label>
-                <Input id="email" type="email" {...register('email')} className="mt-1 rounded-xl" />
-                {errors.email && <p className="text-sm text-destructive mt-1">{errors.email.message}</p>}
+                <Label htmlFor="email" className="text-white/80 font-medium">Email *</Label>
+                <Input id="email" type="email" {...register('email')} className="mt-1 rounded-xl bg-black/40 border-white/10 focus:ring-2 focus:ring-brand-sky/50 text-white" />
+                {errors.email && <p className="text-sm text-brand-coral mt-1">{errors.email.message}</p>}
               </div>
               <div>
-                <Label htmlFor="message">Message</Label>
-                <Textarea id="message" {...register('message')} className="mt-1 rounded-xl" rows={3} />
+                <Label htmlFor="message" className="text-white/80 font-medium">Message</Label>
+                <Textarea id="message" {...register('message')} className="mt-1 rounded-xl bg-black/40 border-white/10 focus:ring-2 focus:ring-brand-sky/50 text-white" rows={3} />
               </div>
-              <Button type="submit" variant="hero" size="lg" className="w-full">
+              <Button type="submit" variant="default" size="lg" className="w-full bg-gradient-to-r from-brand-sky to-brand-coral text-white border-0 hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(59,130,246,0.5)] rounded-full font-bold mt-2">
                 Submit Enquiry
               </Button>
             </form>

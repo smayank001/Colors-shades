@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link, Outlet } from 'react-router-dom';
 import { Palette, LayoutDashboard, BookOpen, Image, Trophy, MessageSquare, Settings, LogOut, Menu, X } from 'lucide-react';
-import { isAuthenticated, logout } from '@/mock-api/db';
+import { isAuthenticated, logout } from '@/api';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', path: '/admin', icon: LayoutDashboard },
   { label: 'Services', path: '/admin/services', icon: BookOpen },
-  { label: 'Gallery', path: '/admin/gallery', icon: Image },
-  { label: 'Achievements', path: '/admin/achievements', icon: Trophy },
+  { label: 'Courses', path: '/admin/courses', icon: BookOpen },
+  { label: 'Media', path: '/admin/media', icon: Image },
   { label: 'Enquiries', path: '/admin/enquiries', icon: MessageSquare },
-  { label: 'Settings', path: '/admin/settings', icon: Settings },
+  { label: 'QR Code', path: '/admin/qr', icon: Settings },
 ];
 
 export default function AdminLayout() {

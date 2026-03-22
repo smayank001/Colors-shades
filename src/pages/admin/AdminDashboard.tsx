@@ -1,15 +1,50 @@
-import { BookOpen, Image, Trophy, MessageSquare } from 'lucide-react';
-import { getServices, getGallery, getAchievements, getEnquiries } from '@/mock-api/db';
+import { useState, useEffect } from 'react';
+import { BookOpen, Image, MessageSquare, PlayCircle } from 'lucide-react';
+import { getServices, getCourses, getMedia, getEnquiries } from '@/api';
 
 export default function AdminDashboard() {
-  const stats = [
-    { label: 'Services', count: getServices().length, icon: BookOpen, color: 'bg-brand-coral/10 text-brand-coral' },
-    { label: 'Gallery Items', count: getGallery().length, icon: Image, color: 'bg-brand-sky/10 text-brand-sky' },
-    { label: 'Achievements', count: getAchievements().length, icon: Trophy, color: 'bg-brand-yellow/10 text-brand-yellow' },
-    { label: 'Enquiries', count: getEnquiries().length, icon: MessageSquare, color: 'bg-brand-fresh/10 text-brand-fresh' },
-  ];
+  const [counts, setCounts] = useState({ services: 0, courses: 0, media: 0, enquiries: 0 });
+  const [recentEnquiries, setRecentEnquiries] = useState<any[]>([]);
 
-  const recentEnquiries = getEnquiries().slice(-5).reverse();
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const [services, media, enquiries] = await Promise.all([
+          getServices(),
+          getMedia('events'), // optionally fetch more categories
+          getEnquiries(),
+        ]);
+        
+        let courseCount = 0;
+        if (services && services.length) {
+          // just an estimate or fetch for first service
+          const courses = await getCourses(services[0].id);
+          courseCount = courses ? courses.length : 0;
+        }
+
+        setCounts({
+          services: services ? services.length : 0,
+          courses: courseCount,
+          media: media ? media.length : 0,
+          enquiries: enquiries ? enquiries.length : 0,
+        });
+
+        if (enquiries) {
+          setRecentEnquiries(enquiries.slice(0, 5));
+        }
+      } catch (e) {
+        console.error('Failed to load dashboard stats', e);
+      }
+    }
+    loadStats();
+  }, []);
+
+  const stats = [
+    { label: 'Services', count: counts.services, icon: BookOpen, color: 'bg-brand-coral/10 text-brand-coral' },
+    { label: 'Courses (1st service)', count: counts.courses, icon: PlayCircle, color: 'bg-brand-sky/10 text-brand-sky' },
+    { label: 'Media Items', count: counts.media, icon: Image, color: 'bg-brand-yellow/10 text-brand-yellow' },
+    { label: 'Enquiries', count: counts.enquiries, icon: MessageSquare, color: 'bg-brand-fresh/10 text-brand-fresh' },
+  ];
 
   return (
     <div>
@@ -29,38 +64,32 @@ export default function AdminDashboard() {
 
       <h2 className="font-heading text-lg font-bold mb-4">Recent Enquiries</h2>
       <div className="bg-card rounded-2xl shadow-soft overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border text-left">
-                <th className="px-4 py-3 font-semibold">Name</th>
-                <th className="px-4 py-3 font-semibold">Email</th>
-                <th className="px-4 py-3 font-semibold">Course</th>
-                <th className="px-4 py-3 font-semibold">Status</th>
-                <th className="px-4 py-3 font-semibold">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentEnquiries.map((e) => (
-                <tr key={e.id} className="border-b border-border last:border-0 hover:bg-muted/50">
-                  <td className="px-4 py-3 font-medium">{e.name}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{e.email}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{e.course_slug || '—'}</td>
-                  <td className="px-4 py-3">
-                    <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-semibold ${
-                      e.status === 'paid' ? 'bg-brand-fresh/10 text-brand-fresh' :
-                      e.status === 'processed' ? 'bg-brand-sky/10 text-brand-sky' :
-                      'bg-brand-yellow/10 text-brand-yellow'
-                    }`}>
-                      {e.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground tabular-nums">{new Date(e.created_at).toLocaleDateString()}</td>
+        {recentEnquiries.length === 0 ? (
+          <div className="p-8 text-center text-muted-foreground">No recent enquiries found.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-left">
+                  <th className="px-4 py-3 font-semibold">Name</th>
+                  <th className="px-4 py-3 font-semibold">Phone</th>
+                  <th className="px-4 py-3 font-semibold">Course</th>
+                  <th className="px-4 py-3 font-semibold">Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {recentEnquiries.map((e) => (
+                  <tr key={e.id} className="border-b border-border last:border-0 hover:bg-muted/50">
+                    <td className="px-4 py-3 font-medium">{e.name}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{e.phone}</td>
+                    <td className="px-4 py-3 text-brand-coral font-medium">{e.course}</td>
+                    <td className="px-4 py-3 text-muted-foreground tabular-nums">{new Date(e.created_at || Date.now()).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

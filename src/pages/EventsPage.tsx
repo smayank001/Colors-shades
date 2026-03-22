@@ -1,72 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Video, Image as ImageIcon } from 'lucide-react';
-
-const EVENTS = [
-  { id: '1', title: 'Summer Art Camp 2025', category: 'summer-camp', date: 'June 1–14, 2025', description: 'Two weeks of non-stop creativity! Drawing, painting, crafts, and art games for ages 4–12.', type: 'photo' },
-  { id: '2', title: 'Watercolor Workshop', category: 'workshops', date: 'April 20, 2025', description: 'A special one-day workshop on watercolor techniques for beginners and intermediate students.', type: 'photo' },
-  { id: '3', title: 'Weekend Sketch Class', category: 'classes', date: 'Every Saturday', description: 'Regular weekend sketching sessions for children who want extra practice time.', type: 'video' },
-  { id: '4', title: 'Clay Modeling Workshop', category: 'workshops', date: 'May 5, 2025', description: 'Learn the basics of clay modeling and create your own miniature sculptures.', type: 'photo' },
-  { id: '5', title: 'Art Exhibition 2025', category: 'summer-camp', date: 'July 2025', description: 'Annual student art exhibition showcasing the best works from the year.', type: 'photo' },
-];
-
-const TABS = ['All', 'Summer Camp', 'Workshops', 'Classes'];
+import { Calendar, Video, Image as ImageIcon, X } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
+import { getMedia } from '@/api';
 
 export default function EventsPage() {
-  const [tab, setTab] = useState('All');
-  const filtered = tab === 'All' ? EVENTS : EVENTS.filter(e => e.category === tab.toLowerCase().replace(' ', '-'));
+  const [events, setEvents] = useState<any[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
+  
+  useEffect(() => {
+    getMedia('events').then(data => setEvents(data || [])).catch(console.error);
+  }, []);
 
   return (
     <>
-      <section className="bg-bg-cream py-16 lg:py-24">
-        <div className="container mx-auto px-4 lg:px-8">
-          <h1 className="font-heading text-4xl sm:text-5xl font-extrabold mb-4">Events & Workshops</h1>
-          <p className="text-lg text-muted-foreground">Stay updated with our exciting events, camps, and workshops.</p>
+      <section className="relative overflow-hidden bg-[#020617] py-24 lg:py-32 transition-colors border-b border-white/5">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#EF4444]/10 via-transparent to-[#F97316]/5 pointer-events-none"></div>
+        <div className="container relative mx-auto px-4 lg:px-8">
+          <h1 className="font-heading text-5xl sm:text-6xl font-bold mb-6 text-foreground">
+            Upcoming <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EF4444] to-[#F97316]">Events</span>
+          </h1>
+          <p className="text-lg text-white/70 max-w-2xl font-light leading-relaxed">
+            Stay updated with our exciting events, camps, and workshops.
+          </p>
         </div>
       </section>
 
       <section className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="flex flex-wrap gap-2 mb-10">
-          {TABS.map(t => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${t === tab ? 'bg-brand-coral text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'}`}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((event, i) => (
+          {events.length === 0 ? (
+             <div className="col-span-1 sm:col-span-2 lg:col-span-3 text-center text-muted-foreground p-8">No events found.</div>
+          ) : events.map((event, i) => (
             <motion.div
               key={event.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              className="bg-card rounded-2xl overflow-hidden shadow-soft hover:shadow-hover transition-shadow"
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="bg-[#1E293B] border border-white/5 rounded-2xl overflow-hidden shadow-lg hover:shadow-[0_0_30px_rgba(239,68,68,0.2)] transition-all duration-300 group"
             >
-              <div className="h-48 bg-gradient-to-br from-brand-sky/20 to-brand-fresh/20 flex items-center justify-center">
-                {event.type === 'video' ? (
-                  <Video className="h-12 w-12 text-brand-sky/50" />
+              <div className="relative h-64 bg-gradient-to-br from-[#020617] to-[#1E293B] overflow-hidden">
+                {event.media_type === 'video' || (event.url && event.url.match(/\.(mp4|webm|ogg)$/i)) ? (
+                  <video src={event.url} className="w-full h-full object-cover" controls playsInline />
+                ) : event.url ? (
+                  <img src={event.url} alt={event.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" />
                 ) : (
-                  <ImageIcon className="h-12 w-12 text-brand-coral/50" />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-30">
+                    <Calendar className="h-16 w-16 text-white" />
+                  </div>
                 )}
-              </div>
-              <div className="p-6">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-                  <Calendar className="h-3.5 w-3.5" />
-                  {event.date}
+                <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white border border-white/10 px-4 py-1.5 rounded-full text-sm font-medium">
+                  {new Date(event.event_date || event.created_at || Date.now()).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </div>
-                <h3 className="font-heading text-lg font-bold mb-2">{event.title}</h3>
-                <p className="text-sm text-muted-foreground line-clamp-3">{event.description}</p>
+              </div>
+              <div className="p-8">
+                <h3 className="font-heading text-2xl font-bold mb-4 text-foreground">{event.title}</h3>
+                {event.subtitle && <p className="text-brand-coral font-medium mb-2">{event.subtitle}</p>}
+                <p className="text-white/70 text-base leading-relaxed whitespace-pre-wrap">{event.description}</p>
               </div>
             </motion.div>
           ))}
         </div>
       </section>
+
+      {/* Modal removed as per user request to show description on page */}
     </>
   );
 }

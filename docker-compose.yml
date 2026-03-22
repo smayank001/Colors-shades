@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # Backend container (Node.js)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: color-shades-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+    # Add your Supabase or other env variables here
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+
+  # Frontend container (React + Nginx)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: color-shades-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+# Optional: Add networks if needed
+# networks:
+#   default:
+#     name: color-shades-network

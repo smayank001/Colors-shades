@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { createEnquiry } from '@/mock-api/db';
+import { addEnquiry } from '@/api';
 import { toast } from 'sonner';
 import content from '@/i18n/en.json';
 
@@ -25,18 +25,20 @@ export default function ContactPage() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    createEnquiry({
-      name: data.name,
-      phone: data.phone,
-      email: data.email,
-      message: data.message,
-      course_slug: '',
-      payment_screenshot_url: '',
-      paid_flag: false,
-    });
-    toast.success('Message sent! We will get back to you soon.');
-    reset();
+  const onSubmit = async (data: FormData) => {
+    try {
+      await addEnquiry({
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        message: data.message,
+        course: 'General Contact Form',
+      });
+      toast.success('Message sent! We will get back to you soon.');
+      reset();
+    } catch (e: any) {
+      toast.error(e.message || 'Failed to send message.');
+    }
   };
 
   const contactInfo = [
@@ -48,10 +50,15 @@ export default function ContactPage() {
 
   return (
     <>
-      <section className="bg-bg-cream py-16 lg:py-24">
-        <div className="container mx-auto px-4 lg:px-8">
-          <h1 className="font-heading text-4xl sm:text-5xl font-extrabold mb-4">Contact Us</h1>
-          <p className="text-lg text-muted-foreground">We'd love to hear from you. Get in touch today!</p>
+      <section className="relative overflow-hidden bg-[#020617] py-24 lg:py-32 transition-colors border-b border-white/5">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#EF4444]/10 via-transparent to-[#F97316]/5 pointer-events-none"></div>
+        <div className="container relative mx-auto px-4 lg:px-8">
+          <h1 className="font-heading text-5xl sm:text-6xl font-bold mb-6 text-foreground">
+            Contact <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EF4444] to-[#F97316]">Us</span>
+          </h1>
+          <p className="text-lg text-white/70 max-w-2xl font-light leading-relaxed">
+            We'd love to hear from you. Get in touch today!
+          </p>
         </div>
       </section>
 
@@ -59,49 +66,51 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Form */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="bg-card rounded-2xl p-6 sm:p-8 shadow-soft">
-              <h2 className="font-heading text-2xl font-bold mb-6">Send us a message</h2>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="bg-[#1E293B] border border-white/5 rounded-2xl p-6 sm:p-10 shadow-lg hover:shadow-[0_0_30px_rgba(239,68,68,0.2)] transition-all duration-300">
+              <h2 className="font-heading text-3xl font-bold mb-8 text-foreground">Send us a message</h2>
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div>
-                  <Label htmlFor="c-name">Name *</Label>
-                  <Input id="c-name" {...register('name')} className="mt-1 rounded-xl" />
-                  {errors.name && <p className="text-sm text-destructive mt-1">{errors.name.message}</p>}
+                  <Label htmlFor="c-name" className="text-white/80 font-medium">Name *</Label>
+                  <Input id="c-name" {...register('name')} className="mt-2 rounded-xl bg-[#020617] border-gray-600 focus:ring-2 focus:ring-[#EF4444] focus:border-[#EF4444] transition-all text-white py-6" />
+                  {errors.name && <p className="text-sm text-brand-coral mt-1">{errors.name.message}</p>}
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="c-phone">Phone *</Label>
-                    <Input id="c-phone" {...register('phone')} className="mt-1 rounded-xl" />
-                    {errors.phone && <p className="text-sm text-destructive mt-1">{errors.phone.message}</p>}
+                    <Label htmlFor="c-phone" className="text-white/80 font-medium">Phone *</Label>
+                    <Input id="c-phone" {...register('phone')} className="mt-2 rounded-xl bg-[#020617] border-gray-600 focus:ring-2 focus:ring-[#EF4444] focus:border-[#EF4444] transition-all text-white py-6" />
+                    {errors.phone && <p className="text-sm text-brand-coral mt-1">{errors.phone.message}</p>}
                   </div>
                   <div>
-                    <Label htmlFor="c-email">Email *</Label>
-                    <Input id="c-email" type="email" {...register('email')} className="mt-1 rounded-xl" />
-                    {errors.email && <p className="text-sm text-destructive mt-1">{errors.email.message}</p>}
+                    <Label htmlFor="c-email" className="text-white/80 font-medium">Email *</Label>
+                    <Input id="c-email" type="email" {...register('email')} className="mt-2 rounded-xl bg-[#020617] border-gray-600 focus:ring-2 focus:ring-[#EF4444] focus:border-[#EF4444] transition-all text-white py-6" />
+                    {errors.email && <p className="text-sm text-brand-coral mt-1">{errors.email.message}</p>}
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="c-message">Message *</Label>
-                  <Textarea id="c-message" {...register('message')} className="mt-1 rounded-xl" rows={5} />
-                  {errors.message && <p className="text-sm text-destructive mt-1">{errors.message.message}</p>}
+                  <Label htmlFor="c-message" className="text-white/80 font-medium">Message *</Label>
+                  <Textarea id="c-message" {...register('message')} className="mt-2 rounded-xl bg-[#020617] border-gray-600 focus:ring-2 focus:ring-[#EF4444] focus:border-[#EF4444] transition-all text-white p-4" rows={5} />
+                  {errors.message && <p className="text-sm text-brand-coral mt-1">{errors.message.message}</p>}
                 </div>
-                <Button type="submit" variant="hero" size="lg" className="w-full">Send Message</Button>
+                <Button type="submit" variant="default" size="xl" className="w-full bg-gradient-to-r from-[#EF4444] to-[#B91C1C] text-white border-0 hover:opacity-90 transition-opacity shadow-[0_0_20px_rgba(239,68,68,0.5)] rounded-full py-6 text-lg font-bold">
+                  Send Message
+                </Button>
               </form>
             </div>
           </motion.div>
 
           {/* Info + Map */}
           <div className="space-y-6">
-            <div className="bg-card rounded-2xl p-6 sm:p-8 shadow-soft">
-              <h2 className="font-heading text-2xl font-bold mb-6">Get in Touch</h2>
-              <div className="space-y-5">
+            <div className="bg-card/40 backdrop-blur-md border border-white/5 rounded-2xl p-6 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col justify-center">
+              <h2 className="font-heading text-3xl font-bold mb-8 text-foreground">Get in Touch</h2>
+              <div className="space-y-8">
                 {contactInfo.map((item) => (
-                  <div key={item.label} className="flex items-start gap-3">
-                    <div className="p-2 rounded-xl bg-brand-coral/10 shrink-0">
-                      <item.icon className="h-5 w-5 text-brand-coral" />
+                  <div key={item.label} className="flex items-center gap-5 group">
+                    <div className="p-4 rounded-xl bg-brand-sky/10 shrink-0 border border-brand-sky/20 group-hover:bg-brand-sky/20 transition-colors">
+                      <item.icon className="h-6 w-6 text-brand-sky drop-shadow-md" />
                     </div>
                     <div>
-                      <p className="font-semibold text-sm">{item.label}</p>
-                      <p className="text-sm text-muted-foreground">{item.value}</p>
+                      <p className="font-heading text-lg font-bold text-foreground mb-1 group-hover:text-brand-sky transition-colors">{item.label}</p>
+                      <p className="text-sm text-white/70 font-light">{item.value}</p>
                     </div>
                   </div>
                 ))}

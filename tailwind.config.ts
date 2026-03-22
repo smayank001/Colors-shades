@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ["Nunito", "sans-serif"],
-        body: ["Quicksand", "sans-serif"],
+        heading: ['"Times New Roman"', "serif"],
+        body: ['"Times New Roman"', "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -52,17 +52,17 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          coral: "#FF6B6B",
-          yellow: "#FFD93D",
-          sky: "#4D96FF",
-          fresh: "#6BCB77",
+          coral: "#EF4444",
+          yellow: "#FACC15",
+          sky: "#3B82F6",
+          fresh: "#F8FAFC",
         },
         bg: {
-          cream: "#FFF7E9",
-          page: "#F9F7F5",
+          cream: "#0F172A",
+          page: "#0F172A",
         },
         text: {
-          dark: "#1E293B",
+          dark: "#F8FAFC",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -74,13 +74,37 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        light: {
+          background: "#0F172A",
+          card: "#1E293B",
+          primary: "#3B82F6",
+          accent: "#EF4444",
+          highlight: "#FACC15",
+          text: "#F8FAFC",
+        },
+        dark: {
+          background: "#0F172A",
+          card: "#1E293B",
+          primary: "#3B82F6",
+          accent: "#EF4444",
+          highlight: "#FACC15",
+          text: "#F8FAFC",
+        },
+        impactfulDark: {
+          background: "#0F172A",
+          card: "#1E293B",
+          primary: "#3B82F6",
+          accent: "#EF4444",
+          highlight: "#FACC15",
+          text: "#F8FAFC",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        xl: "20px",
-        "2xl": "32px",
+        xl: "1rem",
+        "2xl": "1.5rem",
       },
       boxShadow: {
         soft: "0 0 0 1px rgba(0,0,0,.02), 0 2px 4px rgba(0,0,0,.02), 0 12px 24px rgba(0,0,0,.04)",
@@ -114,6 +138,9 @@ export default {
         float: "float 6s ease-in-out infinite",
         "float-slow": "float-slow 8s ease-in-out infinite",
         "pulse-soft": "pulse-soft 4s ease-in-out infinite",
+      },
+      transitionProperty: {
+        colors: "background-color, border-color, color, fill, stroke",
       },
     },
   },

@@ -1,0 +1,11 @@
+# Root .dockerignore
+node_modules
+dist
+.env
+.git
+.gitignore
+backend/node_modules
+README.md
+docker-compose.yml
+Dockerfile
+# Add any other sensitive or unnecessary files

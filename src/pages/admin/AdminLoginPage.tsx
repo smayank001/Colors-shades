@@ -5,22 +5,22 @@ import { Palette, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { mockLogin } from '@/mock-api/db';
+import { login } from '@/api';
 import { toast } from 'sonner';
 
 export default function AdminLoginPage() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = mockLogin(username, password);
-    if (result) {
+    try {
+      await login(email, password);
       toast.success('Welcome back, admin!');
       navigate('/admin');
-    } else {
-      toast.error('Invalid credentials. Try admin / admin123');
+    } catch (err: any) {
+      toast.error(err.message || 'Invalid credentials.');
     }
   };
 
@@ -41,8 +41,8 @@ export default function AdminLoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="username">Username</Label>
-            <Input id="username" value={username} onChange={e => setUsername(e.target.value)} className="mt-1 rounded-xl" placeholder="admin" />
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} className="mt-1 rounded-xl" placeholder="admin@example.com" />
           </div>
           <div>
             <Label htmlFor="password">Password</Label>
@@ -55,7 +55,7 @@ export default function AdminLoginPage() {
         </form>
 
         <p className="text-xs text-center text-muted-foreground mt-6">
-          Demo: admin / admin123
+          Use the credentials from your .env file
         </p>
       </motion.div>
     </div>
