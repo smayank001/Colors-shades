@@ -1,5 +1,5 @@
-export const API_URL = import.meta.env.VITE_API_URL || 'https://colors-shades-backend.vercel.app';
-// export const API_URL = 'http://localhost:5000'; // local development fallback
+export const API_URL = 'https://colors-shades-backend.vercel.app';
+// export const API_URL = 'http://localhost:5000';
 
 
 function getAuthToken() {
