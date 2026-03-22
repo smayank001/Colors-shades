@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:5000';
+// const API_URL = 'http://localhost:5000';
+const API_URL = 'https://colors-shades-backend.vercel.app';
 
 function getAuthToken() {
   return localStorage.getItem('admin_token');

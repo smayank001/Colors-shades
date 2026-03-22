@@ -9,11 +9,6 @@ services:
     container_name: color-shades-backend
     ports:
       - "5000:5000"
-    environment:
-      - PORT=5000
-    # Add your Supabase or other env variables here
-    env_file:
-      - ./backend/.env
     restart: unless-stopped
 
   # Frontend container (React + Nginx)
