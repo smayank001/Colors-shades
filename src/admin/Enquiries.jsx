@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../api';
 
 const Enquiries = () => {
   const [enquiries, setEnquiries] = useState([]);
@@ -6,12 +7,13 @@ const Enquiries = () => {
 
   const fetchEnquiries = async () => {
     try {
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch('http://localhost:5000/enquiries', {
+      const token = localStorage.getItem('admin_token');
+      const res = await fetch(`${API_URL}/enquiries`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+
       if (res.ok) {
         const data = await res.json();
         setEnquiries(data.data || []);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../api';
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -15,8 +16,8 @@ const Courses = () => {
   const fetchData = async () => {
     try {
       const [coursesRes, servicesRes] = await Promise.all([
-        fetch('http://localhost:5000/courses'),
-        fetch('http://localhost:5000/services')
+        fetch(`${API_URL}/courses`),
+        fetch(`${API_URL}/services`)
       ]);
       const coursesData = await coursesRes.json();
       const servicesData = await servicesRes.json();
@@ -44,8 +45,8 @@ const Courses = () => {
     if (!formData.service_id) return alert('Please create and select a service first.');
 
     try {
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch('http://localhost:5000/courses', {
+      const token = localStorage.getItem('admin_token');
+      const res = await fetch(`${API_URL}/courses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,8 +68,8 @@ const Courses = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this course?')) return;
     try {
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch(`http://localhost:5000/courses/${id}`, {
+      const token = localStorage.getItem('admin_token');
+      const res = await fetch(`${API_URL}/courses/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -83,6 +84,7 @@ const Courses = () => {
       console.error(err);
     }
   };
+
 
   return (
     <div className="space-y-8">

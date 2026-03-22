@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../api';
 
 const Media = () => {
   const [mediaList, setMediaList] = useState([]);
@@ -14,7 +15,7 @@ const Media = () => {
   const fetchMedia = async (category = '') => {
     setLoading(true);
     try {
-      const url = category ? `http://localhost:5000/media?category=${category}` : 'http://localhost:5000/media';
+      const url = category ? `${API_URL}/media?category=${category}` : `${API_URL}/media`;
       const res = await fetch(url);
       const data = await res.json();
       setMediaList(data.data || []);
@@ -35,12 +36,12 @@ const Media = () => {
 
     setUploadLoading(true);
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = localStorage.getItem('admin_token');
       const formPayload = new FormData();
       formPayload.append('file', formData.file);
       formPayload.append('category', formData.category);
 
-      const res = await fetch('http://localhost:5000/media', {
+      const res = await fetch(`${API_URL}/media`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -68,8 +69,8 @@ const Media = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this media file?')) return;
     try {
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch(`http://localhost:5000/media/${id}`, {
+      const token = localStorage.getItem('admin_token');
+      const res = await fetch(`${API_URL}/media/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -84,6 +85,7 @@ const Media = () => {
       console.error(err);
     }
   };
+
 
   return (
     <div className="space-y-8">

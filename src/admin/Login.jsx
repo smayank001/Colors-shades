@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../api';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +16,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,9 +27,10 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('admin_token', data.token);
         navigate('/admin/dashboard');
       } else {
+
         setError(data.error || 'Login failed');
       }
     } catch (err) {

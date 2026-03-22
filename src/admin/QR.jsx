@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../api';
 
 const QR = () => {
   const [qrList, setQrList] = useState([]);
@@ -8,7 +9,7 @@ const QR = () => {
 
   const fetchQR = async () => {
     try {
-      const res = await fetch('http://localhost:5000/qr');
+      const res = await fetch(`${API_URL}/qr`);
       const data = await res.json();
       setQrList(data.data || []);
     } catch (err) {
@@ -28,18 +29,19 @@ const QR = () => {
 
     setUploadLoading(true);
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = localStorage.getItem('admin_token');
       const formPayload = new FormData();
       formPayload.append('file', formData.file);
       formPayload.append('name', formData.name);
 
-      const res = await fetch('http://localhost:5000/qr', {
+      const res = await fetch(`${API_URL}/qr`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
         },
         body: formPayload
       });
+
       
       if (res.ok) {
         setFormData({ name: '', file: null });

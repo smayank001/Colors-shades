@@ -129,6 +129,7 @@
 
 
 import { useState, useEffect } from 'react';
+import { API_URL } from '../api';
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -149,7 +150,7 @@ const Services = () => {
   // Fetch services
   const fetchServices = async () => {
     try {
-      const res = await fetch('http://localhost:5000/services');
+      const res = await fetch(`${API_URL}/services`);
       const data = await res.json();
       setServices(data.data || []);
     } catch (err) {
@@ -168,9 +169,9 @@ const Services = () => {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = localStorage.getItem('admin_token');
 
-      const res = await fetch('http://localhost:5000/services', {
+      const res = await fetch(`${API_URL}/services`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -178,6 +179,7 @@ const Services = () => {
         },
         body: JSON.stringify(formData)
       });
+
 
       if (res.ok) {
         setFormData({
@@ -201,14 +203,15 @@ const Services = () => {
     if (!window.confirm('Are you sure?')) return;
 
     try {
-      const token = localStorage.getItem('adminToken');
+      const token = localStorage.getItem('admin_token');
 
-      const res = await fetch(`http://localhost:5000/services/${id}`, {
+      const res = await fetch(`${API_URL}/services/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+
 
       if (res.ok) fetchServices();
       else alert('Delete failed');
