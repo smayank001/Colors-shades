@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { motion, AnimatePresence } from 'framer-motion';
 import { getCourseModules, addCourseModule, deleteCourseModule, getServices } from '@/api';
 import { toast } from 'sonner';
 
@@ -16,7 +17,6 @@ export default function AdminCoursesPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch services string for dropdown
     getServices()
       .then(data => {
         setServices(data || []);
@@ -79,98 +79,140 @@ export default function AdminCoursesPage() {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-2xl font-extrabold">Course Modules</h1>
-        <Button variant="coral" onClick={() => setCreating(true)}>
-          <Plus className="h-4 w-4 mr-1" /> Add Module
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-extrabold text-[#1E293B]">Course Modules</h1>
+          <p className="text-[#1E293B]/40 font-bold text-xs uppercase tracking-widest leading-relaxed">Organize your teaching programs and lessons.</p>
+        </div>
+        <Button className="bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 text-white rounded-2xl px-8 h-14 font-extrabold uppercase tracking-widest text-xs shadow-lg shadow-[#FF6B6B]/20" onClick={() => setCreating(true)}>
+          <Plus className="h-5 w-5 mr-2" /> Add New Module
         </Button>
       </div>
 
-      <div className="mb-6 bg-card/50 p-6 rounded-2xl border border-white/5 shadow-inner">
-        <Label className="text-white/80 font-semibold mb-2 block">Select Service to Manage Modules</Label>
-        <select 
-          className="w-full mt-1 rounded-xl border border-border bg-[#020617] text-white px-4 py-3 text-sm shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-brand-coral/50 cursor-pointer appearance-none"
-          value={selectedService} 
-          onChange={(e) => setSelectedService(e.target.value)}
-        >
-          {services.map(s => (
-            <option key={s.id} value={s.id} className="bg-[#1E293B] text-white">{s.name || s.title}</option>
-          ))}
-        </select>
-      </div>
-
-      {creating && (
-        <div className="bg-card rounded-2xl p-6 shadow-soft mb-6">
-          <h3 className="font-heading text-lg font-bold mb-4">New Course Module</h3>
-          <div className="grid grid-cols-1 gap-4">
-            <div>
-              <Label className="text-white/80">Title</Label>
-              <Input 
-                value={form.title} 
-                onChange={e => setForm({ ...form, title: e.target.value })} 
-                className="mt-1 rounded-xl bg-[#020617] border-white/10 text-white placeholder:text-white/20" 
-                placeholder="E.g. Introduction to Watercolor"
-              />
+      <div className="bg-white p-10 rounded-[40px] shadow-sm border border-[#1E293B]/5 space-y-6">
+        <div className="max-w-md">
+          <Label className="text-[#1E293B] font-extrabold text-xs uppercase tracking-widest mb-4 block pl-2">Select Parent Service</Label>
+          <div className="relative">
+            <select 
+              className="w-full rounded-2xl border-transparent bg-[#F9F7F5] text-[#1E293B] px-8 py-5 text-sm font-bold shadow-sm transition-all focus:bg-white focus:ring-2 focus:ring-[#FF6B6B] cursor-pointer appearance-none pr-12"
+              value={selectedService} 
+              onChange={(e) => setSelectedService(e.target.value)}
+            >
+              {services.map(s => (
+                <option key={s.id} value={s.id}>{s.name || s.title}</option>
+              ))}
+            </select>
+            <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
+               <Plus className="w-4 h-4 rotate-45" />
             </div>
           </div>
-          <div className="mt-4">
-            <Label className="text-white/80">Description</Label>
-            <Textarea 
-              value={form.description} 
-              onChange={e => setForm({ ...form, description: e.target.value })} 
-              className="mt-1 rounded-xl bg-[#020617] border-white/10 text-white placeholder:text-white/20" 
-              rows={3} 
-              placeholder="Brief summary of the module contents..."
-            />
-          </div>
-          <div className="mt-4">
-            <Label className="text-white/80">Bullet Points (One per line)</Label>
-            <Textarea 
-              value={form.bullet_points} 
-              onChange={e => setForm({ ...form, bullet_points: e.target.value })} 
-              className="mt-1 rounded-xl bg-[#020617] border-white/10 text-white placeholder:text-white/20" 
-              rows={5} 
-              placeholder="E.g.&#10;Basic shapes&#10;Shading techniques&#10;Still life drawing" 
-            />
-          </div>
-          <div className="flex gap-2 mt-4">
-            <Button variant="hero" onClick={handleCreate}>Save</Button>
-            <Button variant="ghost" onClick={() => setCreating(false)}>Cancel</Button>
-          </div>
         </div>
-      )}
+      </div>
 
-      <div className="bg-card rounded-2xl shadow-soft overflow-hidden">
+      <AnimatePresence>
+        {creating && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="bg-white rounded-[40px] p-10 shadow-card border border-[#1E293B]/5 relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-2 h-full bg-[#FF6B6B]"></div>
+            <h3 className="text-xl font-extrabold text-[#1E293B] mb-8 uppercase tracking-widest">Create New Module</h3>
+            
+            <div className="grid grid-cols-1 gap-8">
+              <div className="space-y-4">
+                <Label className="text-[#1E293B] font-bold text-xs uppercase tracking-widest pl-2">Module Title</Label>
+                <Input 
+                  value={form.title} 
+                  onChange={e => setForm({ ...form, title: e.target.value })} 
+                  className="rounded-2xl bg-[#F9F7F5] border-transparent focus:bg-white focus:ring-2 focus:ring-[#FF6B6B] h-16 px-6 font-medium text-[#1E293B]" 
+                  placeholder="E.g. Introduction to Watercolor"
+                />
+              </div>
+
+              <div className="space-y-4">
+                <Label className="text-[#1E293B] font-bold text-xs uppercase tracking-widest pl-2">Module Description</Label>
+                <Textarea 
+                  value={form.description} 
+                  onChange={e => setForm({ ...form, description: e.target.value })} 
+                  className="rounded-2xl bg-[#F9F7F5] border-transparent focus:bg-white focus:ring-2 focus:ring-[#FF6B6B] p-6 font-medium text-[#1E293B]" 
+                  rows={3} 
+                  placeholder="Tell us what this module covers..."
+                />
+              </div>
+
+              <div className="space-y-4">
+                <Label className="text-[#1E293B] font-bold text-xs uppercase tracking-widest pl-2">Key Learning Points (One per line)</Label>
+                <Textarea 
+                  value={form.bullet_points} 
+                  onChange={e => setForm({ ...form, bullet_points: e.target.value })} 
+                  className="rounded-2xl bg-[#F9F7F5] border-transparent focus:bg-white focus:ring-2 focus:ring-[#FF6B6B] p-6 font-medium text-[#1E293B]" 
+                  rows={5} 
+                  placeholder="Basic shapes&#10;Color theory&#10;Perspective drawing" 
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-4 mt-10">
+              <Button className="bg-[#1E293B] hover:bg-[#FF6B6B] text-white rounded-2xl px-10 h-14 font-extrabold uppercase tracking-widest text-xs transition-all shadow-lg" onClick={handleCreate}>
+                Create Module
+              </Button>
+              <Button variant="ghost" className="text-[#1E293B]/40 hover:text-[#1E293B] font-extrabold uppercase tracking-widest text-xs rounded-2xl px-8" onClick={() => setCreating(false)}>
+                Discard
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="bg-white rounded-[40px] shadow-sm border border-[#1E293B]/5 overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center text-muted-foreground">Loading course modules...</div>
+          <div className="p-20 text-center flex flex-col items-center gap-4">
+            <div className="w-10 h-10 border-4 border-[#FF6B6B]/10 border-t-[#FF6B6B] rounded-full animate-spin"></div>
+            <p className="text-[#1E293B]/40 font-bold uppercase tracking-widest text-xs">Loading modules...</p>
+          </div>
         ) : courses.length === 0 ? (
-          <div className="p-8 text-center text-muted-foreground">No course modules found for this service.</div>
+          <div className="p-20 text-center">
+            <div className="text-5xl mb-4 opacity-20">📚</div>
+            <p className="text-[#1E293B]/40 font-bold uppercase tracking-widest text-xs">No modules found for this service.</p>
+          </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-border text-left">
-                  <th className="px-4 py-3 font-semibold w-1/4">Title</th>
-                  <th className="px-4 py-3 font-semibold w-1/4">Description</th>
-                  <th className="px-4 py-3 font-semibold w-2/4">Bullet Points</th>
-                  <th className="px-4 py-3 font-semibold">Actions</th>
+                <tr className="bg-[#F9F7F5]/50 border-b border-[#1E293B]/5">
+                  <th className="px-8 py-6 text-[10px] font-extrabold text-[#1E293B]/40 uppercase tracking-[0.2em] w-1/4">Module Title</th>
+                  <th className="px-8 py-6 text-[10px] font-extrabold text-[#1E293B]/40 uppercase tracking-[0.2em] w-1/4">Overview</th>
+                  <th className="px-8 py-6 text-[10px] font-extrabold text-[#1E293B]/40 uppercase tracking-[0.2em] w-2/4">Curriculum</th>
+                  <th className="px-8 py-6 text-[10px] font-extrabold text-[#1E293B]/40 uppercase tracking-[0.2em]">Manage</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-[#1E293B]/5">
                 {courses.map((c: any) => (
-                  <tr key={c.id} className="border-b border-border last:border-0 hover:bg-muted/50">
-                    <td className="px-4 py-3 font-medium">{c.title}</td>
-                    <td className="px-4 py-3 text-muted-foreground truncate max-w-xs">{c.description}</td>
-                    <td className="px-4 py-3 text-muted-foreground">
-                      <ul className="list-disc list-inside">
-                        {Array.isArray(c.bullet_points) && c.bullet_points.map((bp: string, i: number) => (
-                          <li key={i}>{bp}</li>
-                        ))}
-                      </ul>
+                  <tr key={c.id} className="hover:bg-[#F9F7F5]/30 transition-colors group">
+                    <td className="px-8 py-6">
+                       <span className="font-extrabold text-[#1E293B] group-hover:text-[#FF6B6B] transition-colors">{c.title}</span>
                     </td>
-                    <td className="px-4 py-3">
-                      <button onClick={() => handleDelete(c.id)} className="p-1.5 rounded-lg hover:bg-destructive/10 text-destructive" aria-label="Delete">
+                    <td className="px-8 py-6">
+                       <p className="text-[#1E293B]/60 text-sm font-medium line-clamp-2 max-w-xs">{c.description}</p>
+                    </td>
+                    <td className="px-8 py-6">
+                      <div className="flex flex-wrap gap-2">
+                        {Array.isArray(c.bullet_points) && c.bullet_points.map((bp: string, i: number) => (
+                          <span key={i} className="px-3 py-1 rounded-lg bg-[#1E293B]/5 text-[#1E293B]/60 text-[10px] font-bold">
+                            {bp}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-8 py-6">
+                      <button 
+                        onClick={() => handleDelete(c.id)} 
+                        className="p-3 rounded-xl bg-red-50 text-red-400 hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                        aria-label="Delete"
+                      >
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </td>

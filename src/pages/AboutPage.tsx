@@ -10,91 +10,117 @@ const fadeUp = {
 
 export default function AboutPage() {
   return (
-    <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[#020617] py-24 lg:py-32 transition-colors border-b border-white/5">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#EF4444]/10 via-transparent to-[#7e22ce]/10 pointer-events-none"></div>
+    <div className="bg-[#F9F7F5] min-h-screen">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-32 bg-white">
+        <div className="blob w-[500px] h-[500px] bg-[#4D96FF] -top-40 -left-40 opacity-5"></div>
+        <div className="blob w-[300px] h-[300px] bg-[#FF6B6B] bottom-0 -right-20 opacity-5"></div>
+        
         <div className="container relative mx-auto px-4 lg:px-8">
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} className="max-w-3xl">
-            <h1 className="font-heading text-5xl sm:text-6xl font-bold mb-6 text-foreground">
-              About <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EF4444] to-[#F97316]">Us</span>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6 }} 
+            className="max-w-4xl"
+          >
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-[#1E293B] leading-none mb-8">
+              Every Child is <span className="text-[#FF6B6B]">an Artist</span>
             </h1>
-            <p className="text-lg text-white/70 max-w-2xl font-light leading-relaxed">{content.about.mission}</p>
+            <p className="text-xl text-[#1E293B]/60 leading-relaxed max-w-2xl font-medium">
+              {content.about.mission}
+            </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Story */}
-      <section className="container mx-auto px-4 lg:px-8 py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      {/* Story Section */}
+      <section className="container mx-auto px-4 lg:px-8 py-24 pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-tr from-brand-sky to-brand-coral rounded-2xl blur-xl opacity-20 transform scale-95"></div>
-            <img
-              src={aboutStudio}
-              alt="Our studio"
-              className="relative rounded-2xl shadow-2xl w-full object-cover aspect-[4/3] border border-white/10"
-              loading="lazy"
-            />
+            <div className="absolute inset-0 bg-[#FFD93D] rounded-[40px] blur-3xl opacity-10 transform scale-95 translate-y-10 translate-x-10"></div>
+            <div className="relative rounded-[50px] overflow-hidden border-8 border-white shadow-card aspect-[4/3]">
+              <img
+                src={aboutStudio}
+                alt="Our creative studio"
+                className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000"
+                loading="lazy"
+              />
+            </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-            <h2 className="font-heading text-4xl font-bold mb-6 text-foreground">Our Story</h2>
-            <p className="text-white/70 leading-relaxed mb-8 font-light text-lg">{content.about.description}</p>
-            <div className="space-y-6">
-              <div className="flex items-center gap-5 group">
-                <div className="p-4 rounded-xl bg-brand-coral/10 border border-brand-coral/20 group-hover:bg-brand-coral/20 transition-colors shrink-0">
-                  <Clock className="h-6 w-6 text-brand-coral drop-shadow-md" />
+          
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }} 
+            whileInView={{ opacity: 1, x: 0 }} 
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl sm:text-5xl font-extrabold text-[#1E293B] mb-8 leading-tight">Our <span className="text-[#4D96FF]">Creative</span> Journey</h2>
+            <p className="text-[#1E293B]/60 leading-relaxed mb-10 font-medium text-lg italic border-l-4 border-[#FF6B6B] pl-6 uppercase tracking-wide">
+              Where colors meet imagination
+            </p>
+            <p className="text-[#1E293B]/70 leading-relaxed mb-12 font-medium text-lg">
+              {content.about.description}
+            </p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div className="bg-white p-8 rounded-[30px] shadow-sm border border-[#1E293B]/5 hover:shadow-card transition-all duration-300 group">
+                <div className="w-14 h-14 rounded-2xl bg-[#FF6B6B]/10 flex items-center justify-center mb-6 group-hover:bg-[#FF6B6B] transition-colors">
+                  <Clock className="h-7 w-7 text-[#FF6B6B] group-hover:text-white transition-colors" />
                 </div>
-                <div>
-                  <p className="font-heading text-lg font-bold text-foreground mb-1 group-hover:text-brand-coral transition-colors">Timings</p>
-                  <p className="text-sm text-white/70 font-light">{content.about.timings}</p>
-                </div>
+                <h3 className="text-xl font-extrabold text-[#1E293B] mb-2">Our Timings</h3>
+                <p className="text-[#1E293B]/50 font-medium text-sm leading-relaxed">{content.about.timings}</p>
               </div>
-              <div className="flex items-center gap-5 group">
-                <div className="p-4 rounded-xl bg-brand-sky/10 border border-brand-sky/20 group-hover:bg-brand-sky/20 transition-colors shrink-0">
-                  <MapPin className="h-6 w-6 text-brand-sky drop-shadow-md" />
+              
+              <div className="bg-white p-8 rounded-[30px] shadow-sm border border-[#1E293B]/5 hover:shadow-card transition-all duration-300 group">
+                <div className="w-14 h-14 rounded-2xl bg-[#4D96FF]/10 flex items-center justify-center mb-6 group-hover:bg-[#4D96FF] transition-colors">
+                  <MapPin className="h-7 w-7 text-[#4D96FF] group-hover:text-white transition-colors" />
                 </div>
-                <div>
-                  <p className="font-heading text-lg font-bold text-foreground mb-1 group-hover:text-brand-sky transition-colors">Location</p>
-                  <p className="text-sm text-white/70 font-light">{content.site.address}</p>
-                </div>
+                <h3 className="text-xl font-extrabold text-[#1E293B] mb-2">Our Location</h3>
+                <p className="text-[#1E293B]/50 font-medium text-sm leading-relaxed">{content.site.address}</p>
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Teachers */}
-      <section className="bg-[#020617] relative border-t border-white/5 py-24">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(239,68,68,0.05)_0%,transparent_70%)] pointer-events-none"></div>
+      {/* Teachers Section */}
+      <section className="bg-white relative py-24 pb-40 overflow-hidden">
+        <div className="blob w-[600px] h-[600px] bg-[#6BCB77] -bottom-40 -left-40 opacity-5"></div>
         <div className="container relative mx-auto px-4 lg:px-8">
-          <h2 className="font-heading text-4xl font-bold text-center mb-16 text-foreground">Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EF4444] to-[#F97316]">Teachers</span></h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="text-4xl sm:text-5xl font-extrabold text-[#1E293B] mb-6">Our <span className="text-[#6BCB77]">Mentors</span></h2>
+            <p className="text-[#1E293B]/60 font-bold text-lg uppercase tracking-widest leading-none">Meet the creative minds behind our students' success</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {content.about.teachers.map((teacher, i) => (
               <motion.div
                 key={teacher.name}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -8 }}
-                transition={{ delay: i * 0.1, duration: 0.3 }}
-                className="bg-card/40 backdrop-blur-md border border-white/5 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 text-center group"
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="bg-[#F9F7F5] rounded-[40px] p-10 text-center shadow-sm hover:shadow-hover border border-[#1E293B]/5 transition-all duration-500 group"
               >
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-brand-sky to-brand-coral mx-auto mb-6 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)] transform group-hover:scale-110 transition-transform duration-300 border-2 border-white/10">
-                  <span className="text-4xl">👨‍🎨</span>
+                <div className="w-32 h-32 rounded-[50px] bg-white border-4 border-[#F9F7F5] mx-auto mb-8 flex items-center justify-center shadow-card group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 overflow-hidden">
+                  <div className="w-full h-full bg-gradient-to-br from-[#6BCB77]/20 to-[#4D96FF]/20 flex items-center justify-center text-5xl">🎨</div>
                 </div>
-                <h3 className="font-heading text-2xl font-bold mb-2 text-foreground group-hover:text-brand-sky transition-colors">{teacher.name}</h3>
-                <p className="text-sm font-medium mb-4 bg-brand-sky/10 text-brand-sky mx-auto px-4 py-1.5 rounded-full w-max border border-brand-sky/20 drop-shadow-sm">{teacher.role}</p>
-                <p className="text-sm text-white/70 font-light leading-relaxed">{teacher.bio}</p>
+                <h3 className="text-2xl font-extrabold mb-3 text-[#1E293B] group-hover:text-[#6BCB77] transition-colors">{teacher.name}</h3>
+                <div className="px-6 py-2 bg-white rounded-full inline-block mb-6 shadow-sm border border-[#1E293B]/5">
+                  <p className="text-sm font-extrabold text-[#6BCB77] uppercase tracking-wider">{teacher.role}</p>
+                </div>
+                <p className="text-base text-[#1E293B]/60 font-medium leading-relaxed">{teacher.bio}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

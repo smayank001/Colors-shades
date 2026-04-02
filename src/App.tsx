@@ -23,11 +23,15 @@ import AdminEnquiriesPage from "./pages/admin/AdminEnquiriesPage";
 import AdminQRPage from "./pages/admin/AdminQRPage";
 import NotFound from "./pages/NotFound";
 
+import ScrollToTop from "@/components/shared/ScrollToTop";
+
 const queryClient = new QueryClient();
 
 function AppContent() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       {/* Public routes */}
       <Route
         element={
@@ -114,6 +118,7 @@ function AppContent() {
 
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </>
   );
 }
 

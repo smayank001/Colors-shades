@@ -1,125 +1,89 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Palette, Sun, Moon, Monitor } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import content from "@/i18n/en.json";
-import { useTheme } from "@/hooks/useTheme";
 import logoUrl from "@/assets/logo.jpg";
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav
-      className="sticky top-0 z-50 glass-nav border-b border-white/10"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled 
+          ? "py-4 px-4 sm:px-6" 
+          : "py-6 px-4 sm:px-8"
+      }`}
       role="navigation"
       aria-label="Main navigation"
     >
-    <div className="container mx-auto flex items-center justify-between h-20 px-4 lg:px-8">
+      <div 
+        className={`container mx-auto flex items-center justify-between transition-all duration-500 rounded-[30px] px-6 lg:px-10 h-20 ${
+          scrolled 
+            ? "bg-white/80 backdrop-blur-xl shadow-card border border-white/20" 
+            : "bg-white shadow-sm border border-[#1E293B]/5"
+        }`}
+      >
+        {/* Logo Left */}
         <Link
           to="/"
-          className="flex items-center gap-2 font-heading text-xl font-extrabold text-foreground"
+          className="flex items-center gap-2 group shrink-0"
         >
-         <img 
-  src={logoUrl} 
-  alt="Logo" 
-  className="h-16 lg:h-20 w-auto object-contain transition-transform duration-300 hover:scale-105"
-/>
+          <img 
+            src={logoUrl} 
+            alt="Colors N Shades" 
+            className="h-12 lg:h-14 w-auto object-contain transition-all duration-500 group-hover:scale-105 group-hover:rotate-2"
+          />
         </Link>
 
-        {/* Desktop nav */}
-        <div className="hidden lg:flex items-center gap-1">
+        {/* Desktop Nav Center */}
+        <div className="hidden lg:flex items-center gap-1 bg-[#F9F7F5]/50 p-1.5 rounded-full border border-[#1E293B]/5">
           {content.nav.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 hover:text-white group ${
+              className={`relative px-6 py-2.5 text-sm font-extrabold uppercase tracking-widest transition-all duration-300 rounded-full ${
                 location.pathname === item.path
-                  ? "text-white"
-                  : "text-[#CBD5F5]"
+                  ? "text-white bg-[#FF6B6B] shadow-sm"
+                  : "text-[#1E293B]/60 hover:text-[#FF6B6B] hover:bg-white"
               }`}
             >
               {item.label}
-              <span className={`absolute bottom-0 left-0 w-full h-[2px] bg-[#EF4444] transition-transform duration-300 origin-left ${location.pathname === item.path ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}></span>
             </Link>
           ))}
-          <Button 
-            variant="default" 
-            size="default" 
-            className="ml-4 bg-gradient-to-r from-[#EF4444] to-[#B91C1C] hover:opacity-90 hover:scale-105 transition-all duration-300 border-0 text-white rounded-full px-6 shadow-[0_0_15px_rgba(239,68,68,0.4)] hover:shadow-[0_0_20px_rgba(239,68,68,0.6)] font-bold" 
-            asChild
-          >
-            <Link to="/contact">Sign up</Link>
-          </Button>
         </div>
 
-        {/* Theme Switcher */}
-        <div className="flex items-center gap-1 ml-4 pl-4 border-l border-border">
-          {/* <button
-            onClick={() => setTheme("light")}
-            className={`p-2 rounded-full transition-all duration-200 ${
-              theme === "light"
-                ? "bg-primary/20 text-primary"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            aria-label="Switch to light theme"
-            title="Light Theme"
+        {/* Action Button Right */}
+        <div className="hidden lg:flex items-center gap-4">
+          <Button 
+            className="bg-[#1E293B] text-white hover:bg-[#FF6B6B] transition-all duration-500 rounded-full px-8 h-12 font-extrabold text-xs uppercase tracking-widest shadow-sm hover:shadow-hover border-0" 
+            asChild
           >
-            <Sun className="h-5 w-5" />
-          </button> */}
-          {/* <button
-            onClick={() => setTheme("dark")}
-            className={`p-2 rounded-full transition-all duration-200 ${
-              theme === "dark"
-                ? "bg-primary/20 text-primary"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            aria-label="Switch to dark theme"
-            title="Dark Theme"
-          >
-            <Moon className="h-5 w-5" />
-          </button> */}
-          {/* <button
-            onClick={() => setTheme("impactfulDark")}
-            className={`p-2 rounded-full transition-all duration-200 ${
-              theme === "impactfulDark"
-                ? "bg-blue-500/20 text-blue-500"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            aria-label="Switch to impactful dark theme"
-            title="Impactful Dark Theme"
-          >
-            <Moon className="h-5 w-5" />
-          </button> */}
-          {/* <button
-            onClick={() => setTheme("system")}
-            className={`p-2 rounded-full transition-all duration-200 ${
-              theme === "system"
-                ? "bg-primary/20 text-primary"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            aria-label="Switch to system theme"
-            title="System Theme"
-          >
-            <Monitor className="h-5 w-5" />
-          </button> */}
+            <Link to="/contact">Join Class</Link>
+          </Button>
         </div>
 
         {/* Mobile menu button */}
         <button
-          className="lg:hidden p-2 rounded-xl hover:bg-muted transition-colors"
+          className={`lg:hidden p-3 rounded-2xl transition-all duration-300 ${
+            mobileOpen ? 'bg-[#FF6B6B] text-white' : 'bg-[#F9F7F5] text-[#1E293B] hover:bg-[#FF6B6B]/10 hover:text-[#FF6B6B]'
+          }`}
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          aria-expanded={mobileOpen}
         >
-          {mobileOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
 
@@ -127,36 +91,47 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden overflow-hidden border-t border-border"
+            initial={{ opacity: 0, scale: 0.95, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -20 }}
+            className="lg:hidden absolute top-28 left-4 right-4 bg-white/95 backdrop-blur-2xl rounded-[40px] shadow-2xl border border-[#1E293B]/5 p-8 overflow-hidden z-40"
           >
-            <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
-              {content.nav.map((item) => (
-                <Link
+            <div className="flex flex-col gap-3">
+              {content.nav.map((item, i) => (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
                   key={item.path}
-                  to={item.path}
-                  onClick={() => setMobileOpen(false)}
-                  className={`px-4 py-3 rounded-xl text-sm font-medium transition-colors hover:bg-white/10 ${
-                    location.pathname === item.path
-                      ? "bg-white/10 text-white"
-                      : "text-[#CBD5F5]"
-                  }`}
                 >
-                  {item.label}
-                </Link>
+                  <Link
+                    to={item.path}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block px-8 py-5 rounded-[24px] text-lg font-extrabold uppercase tracking-widest transition-all ${
+                      location.pathname === item.path
+                        ? "bg-[#FF6B6B] text-white shadow-lg"
+                        : "text-[#1E293B] hover:bg-[#F9F7F5] hover:text-[#FF6B6B]"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
               ))}
-              <Button 
-                variant="default" 
-                size="lg" 
-                className="mt-2 bg-gradient-to-r from-[#EF4444] to-[#B91C1C] text-white rounded-full border-0 shadow-[0_0_15px_rgba(239,68,68,0.4)]" 
-                asChild
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: content.nav.length * 0.1 }}
+                className="mt-4"
               >
-                <Link to="/contact" onClick={() => setMobileOpen(false)}>
-                  Sign up
-                </Link>
-              </Button>
+                <Button 
+                  className="w-full bg-[#1E293B] text-white rounded-[24px] h-16 font-extrabold uppercase tracking-widest shadow-xl border-0" 
+                  asChild
+                >
+                  <Link to="/contact" onClick={() => setMobileOpen(false)}>
+                    Join Today
+                  </Link>
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         )}

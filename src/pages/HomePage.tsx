@@ -27,16 +27,6 @@ export default function HomePage() {
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [testimonialIdx, setTestimonialIdx] = useState(0);
   const [services, setServices] = useState<any[]>([]);
-  const [activeSlide, setActiveSlide] = useState(0);
-
-  const sliderImages = [summerImage, summerCampImage, aboutStudio];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % sliderImages.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     getServices()
@@ -56,286 +46,188 @@ export default function HomePage() {
     );
 
   return (
-    <>
+    <div className="relative overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-screen flex items-center bg-[#020617] pt-20">
-        {/* Background Image Slider */}
-        <div className="absolute inset-0 z-0">
-          <AnimatePresence mode="wait">
-            {/* <motion.div
-              key={activeSlide}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 0.4, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="absolute inset-0"
-            >
-              <img
-                src={sliderImages[activeSlide]}
-                alt="Background Slide"
-                className="w-full h-full object-cover"
-              />
-            </motion.div> */}
-            <motion.div
-              key={activeSlide}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 0.85, scale: 1 }} // 🔥 increased clarity
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-              className="absolute inset-0"
-            >
-              <img
-                src={sliderImages[activeSlide]}
-                alt="Background Slide"
-                className="w-full h-full object-cover brightness-110 contrast-110"
-              />
-            </motion.div>
-          </AnimatePresence>
+      <section className="relative min-h-[90vh] flex items-center pt-20 pb-20 lg:pb-0 overflow-hidden bg-[#F9F7F5]">
+        {/* Decorative Blobs */}
+        <div className="blob w-[500px] h-[500px] bg-[#FF6B6B] -top-20 -left-20 opacity-10"></div>
+        <div className="blob w-[400px] h-[400px] bg-[#FFD93D] bottom-0 -right-20 opacity-10"></div>
+        <div className="blob w-[300px] h-[300px] bg-[#4D96FF] top-1/4 left-1/3 opacity-5"></div>
 
-          {/* Gradients & Overlays */}
-          {/* <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/80 to-transparent z-10"></div> */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#020617]/70 via-[#020617]/40 to-transparent z-10"></div>
-          {/* <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent z-10"></div> */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/60 via-transparent to-transparent z-10"></div>
-
-          {/* Glowing orbs */}
-          <div className="absolute top-1/4 right-[10%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[#ef4444]/20 to-[#f97316]/10 blur-[120px] mix-blend-screen animate-pulse duration-[8000ms] pointer-events-none z-10"></div>
-        </div>
-
-        <FloatingShape color="rgba(249, 115, 22, 0.15)" size={150} top="15%" right="25%" delay={0} shape="circle" />
-        <FloatingShape color="rgba(239, 68, 68, 0.15)" size={90} bottom="20%" right="15%" delay={1.5} shape="blob" />
-
-        <div className="container relative mx-auto px-4 lg:px-10 py-20 z-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Floating Shapes */}
+        <FloatingShape color="#FF6B6B" size={100} top="15%" right="10%" delay={0} shape="circle" />
+        <FloatingShape color="#FFD93D" size={80} bottom="20%" left="5%" delay={1} shape="blob" />
+        <FloatingShape color="#4D96FF" size={60} top="25%" left="15%" delay={2} shape="circle" />
+        
+        <div className="container relative mx-auto px-4 lg:px-10 z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left content */}
-            <motion.div variants={stagger} initial="hidden" animate="visible" className="max-w-xl">
+            <motion.div variants={stagger} initial="hidden" animate="visible">
               <motion.div
                 variants={fadeUp}
-                className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-[#CBD5F5] rounded-full px-5 py-2 text-sm font-medium mb-8 backdrop-blur-md"
+                className="inline-flex items-center gap-2 bg-[#FF6B6B]/10 text-[#FF6B6B] rounded-full px-5 py-2 text-sm font-bold mb-6"
               >
-                <Star className="h-4 w-4 text-[#F97316]" />
-                Premium Art & Design Academy
+                <Palette className="h-4 w-4" />
+                Art & Learning Institute
               </motion.div>
 
               <motion.h1
                 variants={fadeUp}
-                className="font-heading text-5xl sm:text-6xl md:text-7xl font-bold text-[#F8FAFC] leading-[1.1] mb-8 drop-shadow-lg"
+                className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-[#1E293B] leading-[1.1] mb-8"
               >
-                Unlock Your <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F8FAFC] to-[#CBD5F5]">Creative</span> Potential
+                Sparking <span className="text-[#FF6B6B]">Creativity</span> in Every Child
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
-                className="text-[1.15rem] text-[#CBD5F5] leading-relaxed mb-12 font-light"
+                className="text-xl text-[#1E293B]/60 leading-relaxed mb-10 max-w-lg"
               >
-                Experience a cinematic approach to art education. Master techniques from classical drawing to modern digital arts in a highly focused, premium environment.
+                Colors N Shades is a creative hub where young minds explore art, master chess, and excel in academics through playful and professional learning.
               </motion.p>
 
-              <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+              <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
                 <Button
-                  variant="default"
                   size="xl"
-                  className="bg-gradient-to-r from-[#EF4444] to-[#B91C1C] text-white border-0 hover:scale-105 transition-all duration-300 shadow-[0_0_25px_rgba(239,68,68,0.5)] rounded-full px-8 py-7 text-lg font-bold group"
+                  className="bg-gradient-to-r from-[#FF6B6B] to-[#FFD93D] text-white border-0 hover:scale-105 transition-all duration-300 shadow-card rounded-full px-10 py-7 text-lg font-bold"
                   onClick={() => setEnquiryOpen(true)}
                 >
-                  <span className="relative z-10">Sign Up For A Trial Lesson</span>
+                  Enroll Now
                 </Button>
-                <Link
-                  to="/services"
-                  className="group flex items-center text-[#F8FAFC] text-lg font-medium tracking-wide hover:text-[#EF4444] transition-colors"
+                <Button
+                  variant="outline"
+                  size="xl"
+                  className="border-[#1E293B]/10 text-[#1E293B] hover:bg-[#1E293B]/5 rounded-full px-10 py-7 text-lg font-bold"
+                  asChild
                 >
-                  <span className="relative">
-                    View our courses
-                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#EF4444] transition-all duration-300 group-hover:w-full"></span>
-                  </span>
-                  <ArrowRight className="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform" />
-                </Link>
+                  <Link to="/services">View Courses</Link>
+                </Button>
               </motion.div>
             </motion.div>
 
-            {/* Right visual focus */}
+            {/* Right Images */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="relative h-[500px] lg:h-[600px] hidden md:flex items-center justify-center"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative hidden lg:block"
             >
-              {/* Central glowing container */}
-              <div className="relative w-full h-full max-w-[500px] mx-auto flex items-center justify-center">
-
-                {/* Floating Elements */}
-                <motion.div
-                  className="absolute top-10 right-10 z-30"
-                  animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <div className="w-24 h-24 bg-white/5 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(249,115,22,0.3)]">
-                    <span className="text-5xl drop-shadow-xl">🎨</span>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  className="absolute bottom-20 left-10 z-30"
-                  animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }}
-                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                >
-                  <div className="w-28 h-28 bg-white/5 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.3)]">
-                    <span className="text-6xl drop-shadow-xl">🖌️</span>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  className="absolute top-1/2 right-0 z-30"
-                  animate={{ y: [0, -15, 0], rotate: [0, 15, 0] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                >
-                  <div className="w-20 h-20 bg-white/5 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(126,34,206,0.3)]">
-                    <span className="text-4xl drop-shadow-xl">♟️</span>
-                  </div>
-                </motion.div>
-
-                {/* Primary Artistic Image/Element - Subtle Glass Effect */}
-                {/* <motion.div 
-                  className="relative z-20 w-[300px] h-[400px] rounded-[2rem] overflow-hidden border border-white/20 glass-card shadow-[0_0_50px_rgba(249,115,22,0.1)] flex items-center justify-center"
-                  animate={{ y: [-15, 15, -15] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <div className="text-center p-8">
-                    <div className="w-16 h-16 bg-brand-coral/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Palette className="h-8 w-8 text-brand-coral" />
-                    </div>
-                    <h3 className="text-xl font-bold mb-2">Artistic Studio</h3>
-                    <p className="text-sm text-white/60">Where your journey begins</p>
-                  </div>
-                </motion.div> */}
-
-                {/* Background active slide indicators */}
-                <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-30">
-                  {sliderImages.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveSlide(i)}
-                      className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${i === activeSlide ? 'bg-brand-coral w-6' : 'bg-white/20'}`}
-                    />
-                  ))}
+              <div className="relative z-10 grid grid-cols-2 gap-4">
+                <div className="space-y-4 pt-12">
+                  <motion.div 
+                    whileHover={{ scale: 1.05 }}
+                    className="rounded-[40px] overflow-hidden shadow-2xl border-4 border-white aspect-[3/4]"
+                  >
+                    <img src={summerImage} alt="Art Student" className="w-full h-full object-cover" />
+                  </motion.div>
+                  <motion.div 
+                    whileHover={{ scale: 1.05 }}
+                    className="rounded-full w-24 h-24 bg-[#FFD93D] absolute -bottom-6 -left-6 z-20 flex items-center justify-center text-4xl shadow-lg border-4 border-white"
+                  >
+                    🌟
+                  </motion.div>
                 </div>
-
+                <div className="space-y-4">
+                  <motion.div 
+                    whileHover={{ scale: 1.05 }}
+                    className="rounded-[40px] overflow-hidden shadow-2xl border-4 border-white aspect-[3/4]"
+                  >
+                    <img src={summerCampImage} alt="Creative Workshop" className="w-full h-full object-cover" />
+                  </motion.div>
+                  <div className="h-32 bg-[#4D96FF] rounded-[30px] flex items-center justify-center text-white font-bold p-6 text-center leading-tight shadow-lg border-4 border-white">
+                    Creative Arts & Fun
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Program Preview Cards */}
-      <section className="container mx-auto px-4 lg:px-8 -mt-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[content.programs.young, content.programs.older].map((prog, i) => (
-            <motion.div
-              key={prog.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15 }}
-              className="bg-card/40 backdrop-blur-md border border-white/5 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300"
-            >
-              <div
-                className={`inline-flex items-center justify-center w-16 h-16 rounded-xl mb-6 ${i === 0 ? "bg-gradient-to-br from-brand-sky to-brand-coral" : "bg-gradient-to-br from-brand-yellow to-brand-coral"}`}
+      {/* Services Preview */}
+      <section className="py-32 bg-white relative">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div className="max-w-2xl">
+              <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Explore Our <span className="text-[#4D96FF]">Creative Universe</span></h2>
+              <p className="text-xl text-[#1E293B]/60">From brushstrokes to chess moves, we provide a holistic environment for children to grow and learn.</p>
+            </div>
+            <Button variant="outline" className="rounded-full border-[#1E293B]/10 font-bold" asChild>
+              <Link to="/services">View All Services <ArrowRight className="ml-2 h-4 w-4" /></Link>
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((s, i) => (
+              <motion.div
+                key={s.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
               >
-                <span className="text-3xl text-white">{i === 0 ? "🎨" : "🖌️"}</span>
-              </div>
-              <h3 className="font-heading text-2xl font-bold mb-3">
-                {prog.title}
-              </h3>
-              <p className="text-white/60 text-sm mb-6 leading-relaxed">
-                {prog.description}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {prog.highlights.map((h) => (
-                  <span
-                    key={h}
-                    className="text-xs bg-white/5 border border-white/10 text-white/80 px-4 py-2 rounded-full font-medium"
-                  >
-                    {h}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+                <ServiceCard
+                  slug={s.slug || ""}
+                  title={s.name || s.title}
+                  description={s.description}
+                  image_url={s.image_url}
+                  price={s.price || ""}
+                />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="container mx-auto px-4 lg:px-8 py-20">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
-        >
-          <h2 className="font-heading text-3xl sm:text-4xl font-extrabold mb-4">
-            Our Courses & Services
-          </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Explore our range of creative and academic programs designed for
-            young minds.
-          </p>
-        </motion.div>
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {services.map((s) => (
-            <motion.div key={s.id} variants={fadeUp}>
-              <ServiceCard
-                slug={s.slug || ""}
-                title={s.name || s.title}
-                description={s.description}
-                image_url={s.image_url}
-                price={s.price || ""}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
-      {/* About Preview */}
-      <section className="bg-[#0A0F1C] relative border-t border-white/5">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_0%,transparent_100%)] pointer-events-none"></div>
-        <div className="container mx-auto px-4 lg:px-8 py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      {/* About Section */}
+      <section className="py-32 bg-[#F9F7F5] overflow-hidden">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-tr from-brand-sky to-brand-coral rounded-2xl blur-xl opacity-20 transform scale-95"></div>
-              <img
-                src={aboutStudio}
-                alt="Our art studio"
-                className="relative rounded-2xl shadow-2xl w-full object-cover aspect-[4/3] border border-white/10"
-                loading="lazy"
-              />
+              <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#6BCB77]/20 rounded-full blur-3xl"></div>
+              <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-[#FF6B6B]/10 rounded-full blur-3xl"></div>
+              <div className="relative rounded-[50px] overflow-hidden shadow-2xl border-8 border-white transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+                <img src={aboutStudio} alt="Art Studio" className="w-full aspect-[4/3] object-cover" />
+              </div>
+              {/* Floating badges */}
+              <div className="absolute top-10 -right-8 bg-white p-6 rounded-3xl shadow-xl flex items-center gap-4 border border-[#1E293B]/5 animate-float">
+                <div className="w-12 h-12 bg-[#FFD93D] rounded-full flex items-center justify-center text-2xl">🏆</div>
+                <div>
+                  <div className="font-bold text-[#1E293B]">10+ Years</div>
+                  <div className="text-sm text-[#1E293B]/60 text-nowrap">Experience</div>
+                </div>
+              </div>
             </motion.div>
+
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="font-heading text-4xl sm:text-5xl font-bold mb-6 leading-tight">
-                Where Creativity <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-sky to-brand-coral">Comes to Life</span>
-              </h2>
-              <p className="text-white/70 leading-relaxed mb-10 text-lg font-light">
+              <div className="inline-block bg-[#6BCB77]/10 text-[#6BCB77] px-4 py-2 rounded-full font-bold mb-6">Our Journey</div>
+              <h2 className="text-4xl md:text-5xl font-extrabold mb-8 leading-tight">Where colors meet <span className="text-[#FF6B6B]">imagination</span></h2>
+              <p className="text-lg text-[#1E293B]/60 leading-relaxed mb-10">
                 {content.about.mission}
               </p>
-              <Button variant="outline" size="xl" className="border-white/20 hover:bg-white/10 text-white transition-colors" asChild>
-                <Link to="/about">
-                  Learn more about us <ArrowRight className="h-5 w-5 ml-2" />
-                </Link>
+              <ul className="space-y-4 mb-12">
+                {[
+                  "Experienced Mentors",
+                  "Playful Learning Environment",
+                  "Personalized Attention",
+                  "Creative Skill Building"
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-4 text-[#1E293B] font-semibold">
+                    <div className="w-6 h-6 bg-[#6BCB77] rounded-full flex items-center justify-center text-white text-xs">✓</div>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Button size="lg" className="rounded-full bg-[#1E293B] text-white hover:bg-[#1E293B]/90 font-bold px-10" asChild>
+                <Link to="/about">About Our Studio</Link>
               </Button>
             </motion.div>
           </div>
@@ -343,89 +235,104 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="container mx-auto px-4 lg:px-8 py-20">
-        <div className="text-center mb-12">
-          <h2 className="font-heading text-3xl sm:text-4xl font-extrabold mb-4">
-            What Parents Say
-          </h2>
-        </div>
-        <div className="max-w-2xl mx-auto relative">
-          <motion.div
-            key={testimonialIdx}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="bg-card rounded-2xl p-8 shadow-soft text-center"
-          >
-            <div className="flex justify-center gap-1 mb-4">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="h-5 w-5 fill-brand-yellow text-brand-yellow"
-                />
-              ))}
+      <section className="py-32 bg-white">
+        <div className="container mx-auto px-4 lg:px-8 text-center">
+          <div className="inline-block bg-[#4D96FF]/10 text-[#4D96FF] px-4 py-2 rounded-full font-bold mb-6">Happy Parents</div>
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-16">What Parents & Students Say</h2>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="relative px-12">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={testimonialIdx}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.05 }}
+                  className="bg-[#F9F7F5] rounded-[40px] p-10 md:p-16 shadow-soft border border-[#1E293B]/5 text-center relative overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF6B6B] to-[#FFD93D]"></div>
+                  <div className="text-6xl text-[#FF6B6B]/20 mb-8 italic">"</div>
+                  <p className="text-2xl md:text-3xl text-[#1E293B] font-medium leading-normal mb-10 italic">
+                    {testimonials[testimonialIdx].text}
+                  </p>
+                  <div className="flex flex-col items-center">
+                    <div className="w-20 h-20 bg-gradient-to-br from-[#4D96FF] to-[#6BCB77] rounded-full mb-4 border-4 border-white shadow-lg overflow-hidden flex items-center justify-center text-4xl">
+                      👤
+                    </div>
+                    <h4 className="text-xl font-bold text-[#1E293B]">{testimonials[testimonialIdx].name}</h4>
+                    <p className="text-[#1E293B]/50 font-bold text-sm uppercase tracking-wider">{testimonials[testimonialIdx].role}</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Navigation */}
+              <button 
+                onClick={prevTest}
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full shadow-lg border border-[#1E293B]/5 flex items-center justify-center text-[#1E293B] hover:bg-[#FF6B6B] hover:text-white transition-all z-20 group"
+              >
+                <ChevronLeft className="w-8 h-8 group-active:scale-90" />
+              </button>
+              <button 
+                onClick={nextTest}
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full shadow-lg border border-[#1E293B]/5 flex items-center justify-center text-[#1E293B] hover:bg-[#FF6B6B] hover:text-white transition-all z-20 group"
+              >
+                <ChevronRight className="w-8 h-8 group-active:scale-90" />
+              </button>
             </div>
-            <p className="text-lg text-foreground mb-6 leading-relaxed">
-              "{testimonials[testimonialIdx].text}"
-            </p>
-            <p className="font-heading font-bold">
-              {testimonials[testimonialIdx].name}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {testimonials[testimonialIdx].role}
-            </p>
-          </motion.div>
-          <div className="flex justify-center gap-4 mt-6">
-            <button
-              onClick={prevTest}
-              className="p-2 rounded-full bg-muted hover:bg-muted/80 transition-colors"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <div className="flex gap-2 items-center">
+
+            <div className="flex justify-center gap-3 mt-12">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setTestimonialIdx(i)}
-                  className={`w-2 h-2 rounded-full transition-colors ${i === testimonialIdx ? "bg-brand-coral" : "bg-muted"}`}
-                  aria-label={`Go to testimonial ${i + 1}`}
+                  className={`h-3 rounded-full transition-all duration-300 ${i === testimonialIdx ? "bg-[#FF6B6B] w-8" : "bg-[#1E293B]/10 w-3"}`}
                 />
               ))}
             </div>
-            <button
-              onClick={nextTest}
-              className="p-2 rounded-full bg-muted hover:bg-muted/80 transition-colors"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="container mx-auto px-4 lg:px-8 pb-20">
-        <div className="gradient-warm rounded-2xl p-10 sm:p-16 text-center">
-          <h2 className="font-heading text-3xl sm:text-4xl font-extrabold text-primary-foreground mb-4">
-            Ready to Start Your Child's Creative Journey?
-          </h2>
-          <p className="text-primary-foreground/80 mb-8 max-w-lg mx-auto">
-            Book a free trial lesson and let your child explore the world of
-            colors and creativity.
-          </p>
-          <Button
-            variant="default"
-            size="xl"
-            className="bg-card text-foreground hover:bg-card/90"
-            onClick={() => setEnquiryOpen(true)}
-          >
-            Book a Free Trial
-          </Button>
+      {/* CTA Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="relative rounded-[60px] overflow-hidden bg-[#1E293B] p-12 md:p-24 text-center">
+            {/* Background elements */}
+            <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
+              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full fill-[#FF6B6B]">
+                <path d="M44.7,-76.4C58.8,-69.2,71.8,-58.8,79.6,-45.2C87.4,-31.6,90,-14.8,88.2,1.0C86.4,16.9,80.1,31.7,71.5,44.8C62.9,57.9,52,69.3,38.8,76.5C25.6,83.7,10,86.8,-4.8,83.9C-19.6,81,-39.2,72.2,-53.4,60.1C-67.6,48,-76.4,32.6,-80.8,15.9C-85.2,-0.8,-85.2,-18.8,-78.7,-33.7C-72.2,-48.6,-59.2,-60.4,-44.6,-67.3C-30,-74.2,-13.7,-76.2,1.3,-78.4C16.4,-80.6,30.6,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
+              </svg>
+            </div>
+            <div className="relative z-10">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-8 leading-tight">
+                Empower Your Child with <br /> <span className="text-[#FFD93D]">Confidence</span> & <span className="text-[#FF6B6B]">Creativity</span>
+              </h2>
+              <p className="text-white/60 text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+                Join our community of young artists and learners today. Book a free trial lesson and see the magic happen!
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <Button 
+                  size="xl" 
+                  className="bg-[#FF6B6B] text-white hover:bg-[#FF6B6B]/90 rounded-full px-12 py-8 text-xl font-bold shadow-2xl transition-all hover:scale-105"
+                  onClick={() => setEnquiryOpen(true)}
+                >
+                  Book a Free Trial
+                </Button>
+                <div className="flex items-center gap-4 text-white/80">
+                  <div className="flex -space-x-4">
+                    {[1,2,3,4].map(i => (
+                      <div key={i} className="w-12 h-12 rounded-full border-2 border-[#1E293B] bg-[#4D96FF] flex items-center justify-center text-xl shadow-lg">👤</div>
+                    ))}
+                  </div>
+                  <span className="font-bold">500+ Happy Students</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <EnquiryModal open={enquiryOpen} onClose={() => setEnquiryOpen(false)} />
-    </>
+    </div>
   );
 }

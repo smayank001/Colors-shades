@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, BookOpen, CreditCard, MessageSquare, QrCode } from 'lucide-react';
+import { ArrowLeft, BookOpen, CreditCard, MessageSquare, QrCode, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getServices, getCourseModules } from '@/api';
 import { EnquiryModal } from '@/components/shared/EnquiryModal';
@@ -36,108 +36,145 @@ export default function ServiceDetailPage() {
   }, [slug]);
 
   if (loading) {
-    return <div className="p-20 text-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F9F7F5] gap-4">
+        <div className="w-12 h-12 border-4 border-[#FF6B6B]/20 border-t-[#FF6B6B] rounded-full animate-spin"></div>
+        <p className="text-[#1E293B]/60 font-bold text-lg">Preparing course details...</p>
+      </div>
+    );
   }
 
   if (!service) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <h1 className="font-heading text-3xl font-bold mb-4">Service Not Found</h1>
-        <Button variant="hero" asChild><Link to="/services">Back to Services</Link></Button>
+        <h1 className="text-3xl font-bold mb-4">Program Not Found</h1>
+        <Button asChild className="rounded-full shadow-card bg-[#FF6B6B]"><Link to="/services">Back to Services</Link></Button>
       </div>
     );
   }
 
   return (
-    <>
-      <section className="relative overflow-hidden bg-[#020617] py-24 lg:py-32 transition-colors border-b border-white/5">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#EF4444]/10 via-transparent to-[#F97316]/5 pointer-events-none"></div>
+    <div className="bg-[#F9F7F5] min-h-screen">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-32 bg-white">
+        <div className="blob w-[500px] h-[500px] bg-[#FF6B6B] -top-40 -right-40 opacity-5"></div>
         <div className="container relative mx-auto px-4 lg:px-8">
-          <Link to="/services" className="inline-flex items-center gap-2 text-sm text-[#F8FAFC]/70 hover:text-[#EF4444] transition-colors mb-8">
+          <Link 
+            to="/services" 
+            className="inline-flex items-center gap-2 text-sm font-bold text-[#FF6B6B] hover:translate-x-[-4px] transition-all mb-10 group"
+          >
             <ArrowLeft className="h-4 w-4" />
-            Back to Services
+            Back to Programs
           </Link>
           
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/10 shadow-lg shrink-0 overflow-hidden w-32 h-32 flex items-center justify-center">
+          <div className="flex flex-col md:flex-row gap-10 items-center md:items-start text-center md:text-left">
+            <div className="w-40 h-40 rounded-[40px] bg-white shadow-card p-2 border-4 border-[#F9F7F5] overflow-hidden shrink-0">
               {service.image_url ? (
-                <img src={service.image_url} alt={service.name || service.title} className="w-full h-full object-cover rounded-xl" />
+                <img src={service.image_url} alt={service.name || service.title} className="w-full h-full object-cover rounded-[32px]" />
               ) : (
-                <span className="text-6xl drop-shadow-md">🎨</span>
+                <div className="w-full h-full bg-[#FF6B6B]/10 flex items-center justify-center text-6xl">🎨</div>
               )}
             </div>
-            <div className="max-w-3xl">
-              <h1 className="font-heading text-5xl sm:text-6xl font-bold mb-4 text-foreground">{service.name || service.title}</h1>
-            <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-sm mt-4">
-              <span className="text-brand-yellow font-semibold">{service.price || 'Contact for price'}</span>
-            </div>
+            <div className="max-w-4xl">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#1E293B] leading-tight mb-6">{service.name || service.title}</h1>
+              <div className="inline-flex items-center gap-2 bg-[#FFD93D]/20 text-[#1E293B] px-6 py-2.5 rounded-full font-bold shadow-sm">
+                <Star className="w-4 h-4 text-[#FFD93D] fill-[#FFD93D]" />
+                {service.price || 'Enrollment Open'}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      {/* Content Section */}
+      <section className="container mx-auto px-4 lg:px-8 py-20 pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
           <div className="lg:col-span-2">
-            <div className="prose prose-invert max-w-none">
-              <p className="text-lg text-white/70 font-light leading-relaxed mb-12">{service.description}</p>
+            <div className="max-w-none mb-20">
+              <h2 className="text-3xl font-extrabold text-[#1E293B] mb-8">About This Program</h2>
+              <p className="text-xl text-[#1E293B]/60 leading-relaxed font-medium">{service.description}</p>
             </div>
 
-            <h2 className="font-heading text-3xl font-bold mb-8 text-foreground flex items-center gap-3">
-              <span className="w-8 h-1 bg-gradient-to-r from-brand-sky to-brand-coral rounded-full"></span>
-              Course Modules
-            </h2>
+            <div className="flex items-center gap-4 mb-10">
+              <div className="w-12 h-12 bg-[#4D96FF] rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg">📚</div>
+              <h2 className="text-3xl font-extrabold text-[#1E293B]">Course Modules</h2>
+            </div>
+
             {courseModules.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {courseModules.map((module: any) => (
-                  <div key={module.id} className="bg-[#1E293B] border border-white/5 rounded-2xl p-8 shadow-lg hover:shadow-[0_0_30px_rgba(239,68,68,0.2)] transition-all duration-300 transform hover:-translate-y-1">
-                    <h3 className="font-heading text-2xl font-bold mb-3 text-foreground">{module.title}</h3>
-                    {module.description && <p className="text-white/60 mb-4 font-light leading-relaxed">{module.description}</p>}
+              <div className="grid grid-cols-1 gap-6">
+                {courseModules.map((module: any, i: number) => (
+                  <motion.div 
+                    key={module.id} 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    className="bg-white rounded-[30px] p-8 shadow-card border border-[#1E293B]/5 hover:shadow-hover transition-all duration-300"
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                      <h3 className="text-2xl font-bold text-[#1E293B]">{module.title}</h3>
+                      <div className="px-4 py-1.5 bg-[#4D96FF]/10 text-[#4D96FF] rounded-full text-xs font-bold uppercase tracking-wider">Module {i + 1}</div>
+                    </div>
+                    {module.description && <p className="text-[#1E293B]/60 mb-8 font-medium leading-relaxed">{module.description}</p>}
                     
                     {module.bullet_points && Array.isArray(module.bullet_points) && module.bullet_points.length > 0 && (
-                      <ul className="space-y-2 mt-4 text-white/80">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {module.bullet_points.map((bp: string, i: number) => (
-                          <li key={i} className="flex items-start">
-                            <span className="text-brand-coral mr-2 mt-1 shrink-0">•</span>
-                            <span className="leading-relaxed">{bp}</span>
-                          </li>
+                          <div key={i} className="flex items-center gap-3 bg-[#F9F7F5] p-4 rounded-2xl border border-[#1E293B]/5">
+                            <div className="w-2 h-2 bg-[#FF6B6B] rounded-full"></div>
+                            <span className="text-sm font-bold text-[#1E293B]/80 leading-snug">{bp}</span>
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     )}
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             ) : (
-              <div className="bg-[#1E293B] border border-white/5 rounded-2xl p-12 text-center shadow-inner">
-                <p className="text-white/50">Course modules are being updated. Check back soon!</p>
+              <div className="bg-white rounded-[30px] p-16 text-center border-2 border-dashed border-[#1E293B]/10">
+                <p className="text-[#1E293B]/40 text-lg font-bold italic">The learning journey is being detailed. Check back shortly!</p>
               </div>
             )}
           </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 bg-[#1E293B] border border-white/5 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#EF4444]/20 to-transparent rounded-bl-full pointer-events-none"></div>
+            <div className="sticky top-28 bg-[#1E293B] rounded-[40px] p-10 shadow-2xl text-white overflow-hidden group">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#FF6B6B]/20 to-transparent rounded-bl-full group-hover:scale-110 transition-transform duration-700 pointer-events-none"></div>
               
-              <h3 className="font-heading text-2xl font-bold mb-6 text-foreground relative z-10">Interested in this program?</h3>
-              <p className="text-white/70 mb-8 font-light relative z-10 leading-relaxed">Let us know you're interested and we'll get back to you with available slots and more details.</p>
+              <h3 className="text-3xl font-extrabold mb-6 relative z-10">Start Your Journey!</h3>
+              <p className="text-white/60 mb-10 font-bold relative z-10 leading-relaxed text-lg">Interested in this program? Enroll now or enquire for more details!</p>
               
-              <div className="flex flex-col space-y-4 relative z-10">
-                <Button size="xl" onClick={() => setEnquiryOpen(true)} className="w-full bg-gradient-to-r from-[#EF4444] to-[#B91C1C] hover:scale-105 transition-all duration-300 text-white border-0 shadow-[0_0_20px_rgba(239,68,68,0.5)] rounded-full text-lg font-bold">
-                  <MessageSquare className="mr-2 h-5 w-5" />
+              <div className="flex flex-col space-y-6 relative z-10">
+                <Button 
+                  size="xl" 
+                  onClick={() => setEnquiryOpen(true)} 
+                  className="w-full bg-[#FF6B6B] hover:bg-[#FF6B6B]/90 hover:scale-[1.02] transition-all duration-300 text-white border-0 shadow-xl rounded-2xl py-8 text-xl font-bold"
+                >
+                  <MessageSquare className="mr-3 h-6 w-6" />
                   Enquire Now
                 </Button>
                 
-                <div className="flex items-center justify-center py-2">
-                  <div className="h-px bg-white/10 w-full"></div>
-                  <span className="shrink-0 px-4 text-white/40 text-sm">or</span>
-                  <div className="h-px bg-white/10 w-full"></div>
+                <div className="flex items-center justify-center">
+                  <div className="h-[1px] bg-white/10 flex-grow"></div>
+                  <span className="px-4 text-white/30 font-bold text-xs uppercase tracking-widest leading-none mt-[-2px]">or</span>
+                  <div className="h-[1px] bg-white/10 flex-grow"></div>
                 </div>
 
-                <Button variant="outline" size="xl" onClick={() => setPaymentOpen(true)} className="w-full bg-transparent border border-white/20 text-[#F8FAFC] hover:bg-white/5 hover:text-white transition-colors rounded-full text-lg font-medium group">
-                  <QrCode className="mr-2 h-5 w-5 text-white/70 group-hover:text-white transition-colors" />
+                <Button 
+                  variant="outline" 
+                  size="xl" 
+                  onClick={() => setPaymentOpen(true)} 
+                  className="w-full bg-white/5 border-2 border-white/10 text-white hover:bg-white/10 hover:border-white/20 transition-all rounded-2xl py-8 text-lg font-bold group shadow-inner"
+                >
+                  <QrCode className="mr-3 h-6 w-6 text-[#FFD93D]" />
                   Pay via QR Code
                 </Button>
+              </div>
+              
+              <div className="mt-12 flex items-center gap-4 text-white/40 text-sm font-bold relative z-10">
+                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-lg">🔒</div>
+                <p>Safe and Secure <br/> Enrollment</p>
               </div>
             </div>
           </div>
@@ -146,6 +183,6 @@ export default function ServiceDetailPage() {
 
       <EnquiryModal open={enquiryOpen} onClose={() => setEnquiryOpen(false)} courseSlug={service.slug} courseTitle={service.name || service.title} />
       <PaymentModal open={paymentOpen} onClose={() => setPaymentOpen(false)} />
-    </>
+    </div>
   );
 }

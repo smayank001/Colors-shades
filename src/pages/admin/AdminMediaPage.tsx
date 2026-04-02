@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { Plus, Trash2, Upload } from 'lucide-react';
+import { Plus, Trash2, Upload, Image as ImageIcon, Film, Calendar, CloudUpload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { motion, AnimatePresence } from 'framer-motion';
 import { getMedia, addMedia, deleteMedia } from '@/api';
 import { toast } from 'sonner';
 
@@ -43,7 +44,6 @@ export default function AdminMediaPage() {
       return;
     }
 
-    // Validate image file
     if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
       toast.error('Only image and video files are supported');
       return;
@@ -52,8 +52,8 @@ export default function AdminMediaPage() {
     try {
       const formData = new FormData();
       formData.append('title', title);
-      formData.append('section', category); // section is events/student_work/achievements
-      formData.append('category', itemCategory || category); // sub-category if any
+      formData.append('section', category);
+      formData.append('category', itemCategory || category);
       formData.append('subtitle', subtitle);
       formData.append('description', description);
       formData.append('event_date', eventDate);
@@ -91,148 +91,208 @@ export default function AdminMediaPage() {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-2xl font-extrabold">Media Library</h1>
-        <Button variant="coral" onClick={() => setCreating(true)}>
-          <Upload className="h-4 w-4 mr-1" /> Upload Media
+    <div className="space-y-8 pb-20">
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl font-extrabold text-[#1E293B]">Media Library</h1>
+          <p className="text-[#1E293B]/40 font-bold text-xs uppercase tracking-widest leading-relaxed">Manage your gallery, events, and student artwork.</p>
+        </div>
+        <Button className="bg-[#4D96FF] hover:bg-[#4D96FF]/90 text-white rounded-2xl px-8 h-14 font-extrabold uppercase tracking-widest text-xs shadow-lg shadow-[#4D96FF]/20" onClick={() => setCreating(true)}>
+          <Upload className="h-5 w-5 mr-2" /> Upload New Media
         </Button>
       </div>
 
-      <div className="mb-6 flex gap-4 border-b border-border pb-2">
+      <div className="flex flex-wrap gap-4 p-2 bg-white rounded-3xl shadow-sm border border-[#1E293B]/5 w-max">
         {['events', 'student_work', 'achievements'].map(cat => (
           <button
             key={cat}
-            className={`px-4 py-2 font-semibold text-sm transition-colors rounded-t-lg ${category === cat ? 'bg-brand-coral/10 text-brand-coral border-b-2 border-brand-coral' : 'text-muted-foreground hover:bg-muted'}`}
+            className={`px-8 py-3 rounded-2xl font-extrabold text-xs uppercase tracking-widest transition-all duration-300 ${
+              category === cat 
+                ? 'bg-[#FF6B6B] text-white shadow-lg shadow-[#FF6B6B]/20 scale-105' 
+                : 'text-[#1E293B]/40 hover:bg-[#F9F7F5] hover:text-[#1E293B]'
+            }`}
             onClick={() => setCategory(cat)}
           >
-            {cat.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())}
+            {cat.replace('_', ' ')}
           </button>
         ))}
       </div>
 
-      {creating && (
-        <div className="bg-card rounded-2xl p-6 shadow-soft mb-6">
-          <h3 className="font-heading text-lg font-bold mb-4">Upload {category.replace('_', ' ')} Media</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <Label>Title</Label>
-              <Input value={title} onChange={e => setTitle(e.target.value)} className="mt-1 rounded-xl" placeholder="Main Title" />
-            </div>
-            {category === 'student_work' && (
-              <div>
-                <Label>Subtitle / Byline</Label>
-                <Input value={subtitle} onChange={e => setSubtitle(e.target.value)} className="mt-1 rounded-xl" placeholder="By Aarav, Age 9" />
+      <AnimatePresence>
+        {creating && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-white rounded-[40px] p-10 shadow-card border border-[#1E293B]/5 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#4D96FF]/5 rounded-bl-[100px]"></div>
+            <h3 className="text-xl font-extrabold text-[#1E293B] mb-8 uppercase tracking-widest">Post to {category.replace('_', ' ')}</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <Label className="text-[#1E293B] font-bold text-xs uppercase tracking-widest pl-2">Media Title</Label>
+                <Input value={title} onChange={e => setTitle(e.target.value)} className="rounded-2xl bg-[#F9F7F5] border-transparent focus:bg-white focus:ring-2 focus:ring-[#4D96FF] h-16 px-6 font-medium text-[#1E293B]" placeholder="What should we call this?" />
               </div>
-            )}
-            <div>
-              <Label className="text-white/80">Category</Label>
-              <select
-                value={itemCategory}
-                onChange={e => setItemCategory(e.target.value)}
-                className="w-full mt-1 rounded-xl border border-border bg-[#020617] text-white px-3 py-2 text-sm focus:ring-2 focus:ring-brand-coral/50 outline-none cursor-pointer appearance-none"
-              >
-                <option value="" className="bg-[#1E293B]">Select Category</option>
-                {category === 'student_work' && (
-                  <>
-                    <option value="Paintings" className="bg-[#1E293B]">Paintings</option>
-                    <option value="Crafts" className="bg-[#1E293B]">Crafts</option>
-                    <option value="Summer Camp" className="bg-[#1E293B]">Summer Camp</option>
-                  </>
-                )}
-                {category === 'events' && (
-                  <>
-                    <option value="Workshop" className="bg-[#1E293B]">Workshop</option>
-                    <option value="Competition" className="bg-[#1E293B]">Competition</option>
-                    <option value="Exhibition" className="bg-[#1E293B]">Exhibition</option>
-                  </>
-                )}
-                {category === 'achievements' && (
-                  <>
-                    <option value="Award" className="bg-[#1E293B]">Award</option>
-                    <option value="Competition" className="bg-[#1E293B]">Competition</option>
-                    <option value="Certificate" className="bg-[#1E293B]">Certificate</option>
-                  </>
-                )}
-              </select>
-            </div>
-            {(category === 'events' || category === 'achievements') && (
-              <div>
-                <Label>Date</Label>
-                <Input type="date" value={eventDate} onChange={e => setEventDate(e.target.value)} className="mt-1 rounded-xl" />
+              
+              {category === 'student_work' && (
+                <div className="space-y-4">
+                  <Label className="text-[#1E293B] font-bold text-xs uppercase tracking-widest pl-2">Student Attribution</Label>
+                  <Input value={subtitle} onChange={e => setSubtitle(e.target.value)} className="rounded-2xl bg-[#F9F7F5] border-transparent focus:bg-white focus:ring-2 focus:ring-[#4D96FF] h-16 px-6 font-medium text-[#1E293B]" placeholder="e.g. By Aarav, Age 9" />
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <Label className="text-[#1E293B] font-bold text-xs uppercase tracking-widest pl-2">Category Selection</Label>
+                <div className="relative">
+                  <select
+                    value={itemCategory}
+                    onChange={e => setItemCategory(e.target.value)}
+                    className="w-full rounded-2xl border-transparent bg-[#F9F7F5] text-[#1E293B] px-8 py-5 text-sm font-bold shadow-sm transition-all focus:bg-white focus:ring-2 focus:ring-[#4D96FF] cursor-pointer appearance-none pr-12"
+                  >
+                    <option value="">Default ({category})</option>
+                    {category === 'student_work' && (
+                      <>
+                        <option value="Paintings">Paintings</option>
+                        <option value="Crafts">Crafts</option>
+                        <option value="Summer Camp">Summer Camp</option>
+                      </>
+                    )}
+                    {category === 'events' && (
+                      <>
+                        <option value="Workshop">Workshop</option>
+                        <option value="Competition">Competition</option>
+                        <option value="Exhibition">Exhibition</option>
+                      </>
+                    )}
+                    {category === 'achievements' && (
+                      <>
+                        <option value="Award">Award</option>
+                        <option value="Competition">Competition</option>
+                        <option value="Certificate">Certificate</option>
+                      </>
+                    )}
+                  </select>
+                  <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
+                    <Plus className="w-4 h-4 rotate-45" />
+                  </div>
+                </div>
               </div>
-            )}
-            <div>
-              <Label>File (Image/Video)</Label>
-              <Input
-                type="file"
-                ref={fileInputRef}
-                onChange={e => setFile(e.target.files?.[0] || null)}
-                className="mt-1 rounded-xl"
-                accept="image/*,video/*"
-              />
+
+              {(category === 'events' || category === 'achievements') && (
+                <div className="space-y-4">
+                  <Label className="text-[#1E293B] font-bold text-xs uppercase tracking-widest pl-2">Event Date</Label>
+                  <div className="relative">
+                    <Input type="date" value={eventDate} onChange={e => setEventDate(e.target.value)} className="rounded-2xl bg-[#F9F7F5] border-transparent focus:bg-white focus:ring-2 focus:ring-[#4D96FF] h-16 px-6 font-medium text-[#1E293B] pr-12" />
+                    <Calendar className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1E293B]/20 pointer-events-none" />
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-4 md:col-span-2">
+                <Label className="text-[#1E293B] font-bold text-xs uppercase tracking-widest pl-2">Story / Description</Label>
+                <Textarea
+                  value={description}
+                  onChange={(e: any) => setDescription(e.target.value)}
+                  className="rounded-2xl bg-[#F9F7F5] border-transparent focus:bg-white focus:ring-2 focus:ring-[#4D96FF] p-6 font-medium text-[#1E293B]"
+                  rows={3}
+                  placeholder="Tell the story behind this masterpiece..."
+                />
+              </div>
+
+              <div className="md:col-span-2 border-2 border-dashed border-[#1E293B]/10 rounded-[30px] p-10 bg-[#F9F7F5]/50 flex flex-col items-center justify-center group hover:border-[#4D96FF]/30 transition-all cursor-pointer relative overflow-hidden">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={e => setFile(e.target.files?.[0] || null)}
+                  className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                  accept="image/*,video/*"
+                />
+                <div className="p-5 rounded-full bg-white shadow-xl text-[#4D96FF] mb-4 group-hover:scale-110 transition-transform">
+                   <CloudUpload className="w-8 h-8" />
+                </div>
+                <p className="text-[#1E293B] font-extrabold text-sm uppercase tracking-widest">
+                  {file ? file.name : "Drop Artwork here or click to browse"}
+                </p>
+                <p className="text-[#1E293B]/30 text-xs font-bold mt-2 uppercase tracking-widest leading-relaxed">JPG, PNG, WEBP, or MP4 supported</p>
+              </div>
             </div>
-          </div>
-          <div className="mt-4">
-            <Label>Description</Label>
-            <Textarea
-              value={description}
-              onChange={(e: any) => setDescription(e.target.value)}
-              className="mt-1 rounded-xl"
-              rows={3}
-              placeholder="Full description..."
-            />
-          </div>
-          <div className="flex gap-2 mt-6">
-            <Button variant="hero" onClick={handleCreate} disabled={!title || !file}>
-              Upload
-            </Button>
-            <Button variant="ghost" onClick={() => {
-              setCreating(false);
-              resetForm();
-            }}>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      )}
+
+            <div className="flex gap-4 mt-12">
+              <Button className="bg-[#1E293B] hover:bg-[#4D96FF] text-white rounded-2xl px-10 h-14 font-extrabold uppercase tracking-widest text-xs transition-all shadow-lg" onClick={handleCreate} disabled={!title || !file}>
+                Publish Media
+              </Button>
+              <Button variant="ghost" className="text-[#1E293B]/40 hover:text-[#1E293B] font-extrabold uppercase tracking-widest text-xs rounded-2xl px-8" onClick={() => {
+                setCreating(false);
+                resetForm();
+              }}>Discard</Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {loading ? (
-        <div className="p-8 text-center text-muted-foreground">Loading media...</div>
+        <div className="p-40 text-center flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-[#4D96FF]/10 border-t-[#4D96FF] rounded-full animate-spin"></div>
+          <p className="text-[#1E293B]/40 font-bold uppercase tracking-widest text-xs">Curating your gallery...</p>
+        </div>
       ) : media.length === 0 ? (
-        <div className="p-8 text-center bg-card rounded-2xl shadow-soft text-muted-foreground">
-          No media found in this category.
+        <div className="p-40 text-center bg-white rounded-[40px] border-2 border-dashed border-[#1E293B]/10">
+          <div className="text-6xl mb-6 opacity-20">🎨</div>
+          <p className="text-[#1E293B]/40 font-bold uppercase tracking-widest text-xs">The canvas is empty. Start by uploading some art!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {media.map((m: any) => (
-            <div key={m.id} className="group bg-card rounded-2xl overflow-hidden shadow-soft border border-border relative">
-              <div className="aspect-square bg-muted relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {media.map((m: any, idx: number) => (
+            <motion.div 
+              key={m.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.05 }}
+              className="group bg-white rounded-[32px] overflow-hidden shadow-sm hover:shadow-card transition-all duration-500 border border-[#1E293B]/5 relative"
+            >
+              <div className="aspect-[4/5] bg-[#F9F7F5] relative overflow-hidden">
                 {m.url.match(/\.(mp4|webm|ogg)$/i) ? (
                   <video src={m.url} className="w-full h-full object-cover" controls muted />
                 ) : (
-                  <img src={m.url} alt={m.title} className="w-full h-full object-cover" />
+                  <img src={m.url} alt={m.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                 )}
-                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                
+                <div className="absolute top-4 right-4 translate-x-12 translate-y-[-12px] opacity-0 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                   <button
                     onClick={() => handleDelete(m.id)}
-                    className="p-2 bg-destructive text-destructive-foreground rounded-full shadow-lg hover:bg-destructive/90"
-                    title="Delete Media"
+                    className="p-3 bg-red-500 text-white rounded-2xl shadow-xl hover:bg-black transition-colors"
+                    title="Remove Art"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
+
+                <div className="absolute bottom-4 left-4 flex gap-2">
+                   <div className="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-xl text-[10px] font-extrabold text-[#1E293B] shadow-sm uppercase tracking-widest border border-white/50">
+                      {m.category || category}
+                   </div>
+                   {m.url.match(/\.(mp4|webm|ogg)$/i) && (
+                      <div className="bg-[#4D96FF]/90 backdrop-blur-md p-1.5 rounded-xl text-white shadow-sm border border-white/20">
+                         <Film className="w-3.5 h-3.5" />
+                      </div>
+                   )}
+                </div>
               </div>
-              <div className="p-3">
-                <p className="font-semibold text-sm truncate">{m.title || 'Untitled'}</p>
-                {m.subtitle && <p className="text-xs text-[#F97316] truncate">{m.subtitle}</p>}
-                {m.category && <p className="text-[10px] bg-muted px-1.5 py-0.5 rounded-full w-max mt-1">{m.category}</p>}
-                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{m.description}</p>
-                <p className="text-[10px] text-muted-foreground mt-1 italic">
-                  {m.event_date ? new Date(m.event_date).toLocaleDateString() : new Date(m.created_at || Date.now()).toLocaleDateString()}
-                </p>
+              
+              <div className="p-6">
+                <h4 className="font-extrabold text-[#1E293B] group-hover:text-[#4D96FF] transition-colors line-clamp-1 mb-1">{m.title || 'Untitled'}</h4>
+                {m.subtitle && <p className="text-[10px] font-extrabold text-[#FF6B6B] uppercase tracking-widest mb-3">{m.subtitle}</p>}
+                <p className="text-[#1E293B]/50 text-xs font-medium line-clamp-2 leading-relaxed h-8">{m.description}</p>
+                
+                <div className="mt-6 pt-6 border-t border-[#1E293B]/5 flex items-center justify-between">
+                   <span className="text-[10px] font-bold text-[#1E293B]/20 tabular-nums">
+                      {m.event_date ? new Date(m.event_date).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(m.created_at || Date.now()).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
+                   </span>
+                   <div className="w-1.5 h-1.5 rounded-full bg-[#6BCB77]"></div>
+                </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}

@@ -1,5 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
+import { motion } from "framer-motion";
+import { Home } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
   const location = useLocation();
@@ -9,15 +12,27 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#0A0F1C] relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.15)_0%,transparent_70%)] pointer-events-none"></div>
-      <div className="text-center relative z-10 bg-card/40 backdrop-blur-md border border-white/5 p-12 rounded-3xl shadow-2xl">
-        <h1 className="mb-4 text-8xl font-heading font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-sky to-brand-coral">404</h1>
-        <p className="mb-8 text-xl text-white/70 font-light">Oops! The page you're looking for doesn't exist.</p>
-        <a href="/" className="inline-block bg-white/5 hover:bg-white/10 text-white border border-white/10 px-8 py-3 rounded-full font-medium transition-colors">
-          Return to Home
-        </a>
-      </div>
+    <div className="flex min-h-screen items-center justify-center bg-[#F9F7F5] p-6 relative overflow-hidden">
+      <div className="blob w-[600px] h-[600px] bg-[#FFD93D] -top-40 -left-40 opacity-10"></div>
+      <div className="blob w-[600px] h-[600px] bg-[#4D96FF] -bottom-40 -right-40 opacity-10"></div>
+
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="text-center relative z-10 bg-white p-16 sm:p-20 rounded-[50px] shadow-card border border-[#1E293B]/5 w-full max-w-2xl"
+      >
+        <div className="text-9xl mb-8 select-none">🎨</div>
+        <h1 className="text-7xl sm:text-8xl font-extrabold text-[#1E293B] mb-6">404</h1>
+        <p className="text-2xl text-[#1E293B]/60 font-bold mb-12 max-w-md mx-auto leading-relaxed">
+          Whoops! It looks like this masterpiece is still in the making.
+        </p>
+        <Button size="xl" className="bg-[#1E293B] hover:bg-[#FF6B6B] text-white border-0 transition-all shadow-xl rounded-full px-12 h-16 text-lg font-extrabold uppercase tracking-widest group" asChild>
+          <Link to="/">
+            <Home className="h-5 w-5 mr-3 group-hover:-translate-y-1 transition-transform" />
+            Back to Home
+          </Link>
+        </Button>
+      </motion.div>
     </div>
   );
 };

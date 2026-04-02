@@ -31,6 +31,14 @@ export default {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        accent2: {
+          DEFAULT: "hsl(var(--accent2))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -38,10 +46,6 @@ export default {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -52,63 +56,26 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          coral: "#EF4444",
-          yellow: "#FACC15",
-          sky: "#3B82F6",
-          fresh: "#F8FAFC",
-        },
-        bg: {
-          cream: "#0F172A",
-          page: "#0F172A",
-        },
-        text: {
-          dark: "#F8FAFC",
-        },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
-        light: {
-          background: "#0F172A",
-          card: "#1E293B",
-          primary: "#3B82F6",
-          accent: "#EF4444",
-          highlight: "#FACC15",
-          text: "#F8FAFC",
-        },
-        dark: {
-          background: "#0F172A",
-          card: "#1E293B",
-          primary: "#3B82F6",
-          accent: "#EF4444",
-          highlight: "#FACC15",
-          text: "#F8FAFC",
-        },
-        impactfulDark: {
-          background: "#0F172A",
-          card: "#1E293B",
-          primary: "#3B82F6",
-          accent: "#EF4444",
-          highlight: "#FACC15",
-          text: "#F8FAFC",
+          coral: "#FF6B6B",
+          yellow: "#FFD93D",
+          blue: "#4D96FF",
+          green: "#6BCB77",
+          dark: "#1E293B",
+          light: "#F9F7F5",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        xl: "1rem",
+        xl: "1.25rem",
         "2xl": "1.5rem",
+        "3xl": "2rem",
       },
       boxShadow: {
-        soft: "0 0 0 1px rgba(0,0,0,.02), 0 2px 4px rgba(0,0,0,.02), 0 12px 24px rgba(0,0,0,.04)",
-        hover: "0 0 0 1px rgba(0,0,0,.02), 0 4px 8px rgba(0,0,0,.04), 0 20px 40px rgba(0,0,0,.08)",
+        soft: "var(--shadow-soft)",
+        card: "var(--shadow-card)",
+        hover: "var(--shadow-hover)",
       },
       keyframes: {
         "accordion-down": {
@@ -123,21 +90,16 @@ export default {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-20px)" },
         },
-        "float-slow": {
-          "0%, 100%": { transform: "translateY(0px) rotate(0deg)" },
-          "50%": { transform: "translateY(-12px) rotate(5deg)" },
-        },
-        "pulse-soft": {
-          "0%, 100%": { opacity: "0.6" },
-          "50%": { opacity: "1" },
-        },
+        scaleUp: {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.05)" },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         float: "float 6s ease-in-out infinite",
-        "float-slow": "float-slow 8s ease-in-out infinite",
-        "pulse-soft": "pulse-soft 4s ease-in-out infinite",
+        scaleUp: "scaleUp 4s ease-in-out infinite",
       },
       transitionProperty: {
         colors: "background-color, border-color, color, fill, stroke",
