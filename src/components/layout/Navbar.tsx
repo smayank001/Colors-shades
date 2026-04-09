@@ -44,7 +44,7 @@ export function Navbar() {
           <img 
             src={logoUrl} 
             alt="Colors N Shades" 
-            className="h-12 lg:h-14 w-auto object-contain transition-all duration-500 group-hover:scale-105 group-hover:rotate-2"
+            className="h-16 lg:h-20 w-auto object-contain transition-all duration-500 group-hover:scale-105 group-hover:rotate-2"
           />
         </Link>
 

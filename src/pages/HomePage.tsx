@@ -12,6 +12,15 @@ import content from "@/i18n/en.json";
 import aboutStudio from "@/assets/about-studio.jpg";
 import summerImage from "@/assets/color-shadessummer.jpeg";
 import summerCampImage from "@/assets/color-shadessummercamp.jpeg";
+import hero1 from "@/assets/user_assets/students_thumbsup.jpg";
+import hero2 from "@/assets/user_assets/event_group.jpg";
+import hero3 from "@/assets/user_assets/students_working.jpg";
+import gall1 from "@/assets/user_assets/studio_1.jpg";
+import gall2 from "@/assets/user_assets/student_sunset.jpg";
+import gall3 from "@/assets/user_assets/studio_collage.jpg";
+import gall4 from "@/assets/user_assets/student_landscape.jpg";
+import gall5 from "@/assets/user_assets/students_awards.jpg";
+import gall6 from "@/assets/user_assets/students_table.jpg";
 
 const stagger = {
   hidden: {},
@@ -27,6 +36,16 @@ export default function HomePage() {
   const [enquiryOpen, setEnquiryOpen] = useState(false);
   const [testimonialIdx, setTestimonialIdx] = useState(0);
   const [services, setServices] = useState<any[]>([]);
+  const [heroIdx, setHeroIdx] = useState(0);
+
+  const heroImages = [hero1, hero2, hero3];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeroIdx((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
 
   useEffect(() => {
     getServices()
@@ -73,22 +92,22 @@ export default function HomePage() {
 
               <motion.h1
                 variants={fadeUp}
-                className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-[#1E293B] leading-[1.1] mb-8"
+                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold text-[#1E293B] leading-[0.95] mb-10 tracking-tighter"
               >
                 Sparking <span className="text-[#FF6B6B]">Creativity</span> in Every Child
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
-                className="text-xl text-[#1E293B]/60 leading-relaxed mb-10 max-w-lg"
+                className="text-2xl text-[#1E293B]/70 leading-relaxed mb-12 max-w-xl font-medium"
               >
                 Colors N Shades is a creative hub where young minds explore art, master chess, and excel in academics through playful and professional learning.
               </motion.p>
 
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
+              <motion.div variants={fadeUp} className="flex flex-wrap gap-6">
                 <Button
                   size="xl"
-                  className="bg-gradient-to-r from-[#FF6B6B] to-[#FFD93D] text-white border-0 hover:scale-105 transition-all duration-300 shadow-card rounded-full px-10 py-7 text-lg font-bold"
+                  className="bg-gradient-to-r from-[#FF6B6B] to-[#FFD93D] text-white border-0 hover:scale-105 transition-all duration-300 shadow-2xl rounded-full px-12 py-9 text-xl font-bold"
                   onClick={() => setEnquiryOpen(true)}
                 >
                   Enroll Now
@@ -96,7 +115,7 @@ export default function HomePage() {
                 <Button
                   variant="outline"
                   size="xl"
-                  className="border-[#1E293B]/10 text-[#1E293B] hover:bg-[#1E293B]/5 rounded-full px-10 py-7 text-lg font-bold"
+                  className="border-[#1E293B]/10 text-[#1E293B] hover:bg-[#1E293B]/5 rounded-full px-12 py-9 text-xl font-bold shadow-sm"
                   asChild
                 >
                   <Link to="/services">View Courses</Link>
@@ -104,40 +123,66 @@ export default function HomePage() {
               </motion.div>
             </motion.div>
 
-            {/* Right Images */}
+            {/* Right Slider */}
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative hidden lg:block"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1 }}
+              className="relative hidden lg:block h-[700px]"
             >
-              <div className="relative z-10 grid grid-cols-2 gap-4">
-                <div className="space-y-4 pt-12">
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    className="rounded-[40px] overflow-hidden shadow-2xl border-4 border-white aspect-[3/4]"
-                  >
-                    <img src={summerImage} alt="Art Student" className="w-full h-full object-cover" />
-                  </motion.div>
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    className="rounded-full w-24 h-24 bg-[#FFD93D] absolute -bottom-6 -left-6 z-20 flex items-center justify-center text-4xl shadow-lg border-4 border-white"
-                  >
-                    🌟
-                  </motion.div>
-                </div>
-                <div className="space-y-4">
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    className="rounded-[40px] overflow-hidden shadow-2xl border-4 border-white aspect-[3/4]"
-                  >
-                    <img src={summerCampImage} alt="Creative Workshop" className="w-full h-full object-cover" />
-                  </motion.div>
-                  <div className="h-32 bg-[#4D96FF] rounded-[30px] flex items-center justify-center text-white font-bold p-6 text-center leading-tight shadow-lg border-4 border-white">
-                    Creative Arts & Fun
+              <div className="absolute inset-0 bg-[#FFD93D]/10 rounded-[60px] blur-3xl transform rotate-6 scale-90"></div>
+              <div className="relative w-full h-full rounded-[60px] overflow-hidden border-[12px] border-white shadow-2xl z-10">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={heroIdx}
+                    src={heroImages[heroIdx]}
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.8 }}
+                    className="w-full h-full object-cover"
+                  />
+                </AnimatePresence>
+                
+                {/* Overlay Text */}
+                <div className="absolute bottom-10 left-10 right-10 bg-white/90 backdrop-blur-md p-8 rounded-[40px] border border-white/20 shadow-xl">
+                  <div className="flex items-center gap-4 mb-2">
+                    <div className="w-12 h-1 bg-[#FF6B6B] rounded-full"></div>
+                    <span className="text-sm font-black uppercase tracking-[0.2em] text-[#FF6B6B]">Featured Work</span>
                   </div>
+                  <h3 className="text-3xl font-black text-[#1E293B]">Nurturing Young Talent</h3>
+                </div>
+
+                {/* Slider Controls */}
+                <div className="absolute top-1/2 -translate-y-1/2 left-6 right-6 flex justify-between z-20">
+                  <button 
+                    onClick={() => setHeroIdx((i) => (i - 1 + heroImages.length) % heroImages.length)}
+                    className="w-14 h-14 bg-white/20 hover:bg-white text-white hover:text-[#1E293B] backdrop-blur-md rounded-full flex items-center justify-center transition-all border border-white/30"
+                  >
+                    <ChevronLeft className="h-8 w-8" />
+                  </button>
+                  <button 
+                    onClick={() => setHeroIdx((i) => (i + 1) % heroImages.length)}
+                    className="w-14 h-14 bg-white/20 hover:bg-white text-white hover:text-[#1E293B] backdrop-blur-md rounded-full flex items-center justify-center transition-all border border-white/30"
+                  >
+                    <ChevronRight className="h-8 w-8" />
+                  </button>
+                </div>
+
+                <div className="absolute top-8 right-8 flex gap-2 z-20">
+                  {heroImages.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setHeroIdx(i)}
+                      className={`h-2.5 rounded-full transition-all duration-500 ${i === heroIdx ? "bg-white w-8 shadow-md" : "bg-white/40 w-2.5"}`}
+                    />
+                  ))}
                 </div>
               </div>
+              
+              {/* Floating accents */}
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#4D96FF] rounded-full flex items-center justify-center text-5xl shadow-2xl border-8 border-white z-20 animate-float">🎨</div>
+              <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#6BCB77] rounded-full flex items-center justify-center text-4xl shadow-2xl border-4 border-white z-20 animate-pulse">🌟</div>
             </motion.div>
           </div>
         </div>
@@ -230,6 +275,36 @@ export default function HomePage() {
                 <Link to="/about">About Our Studio</Link>
               </Button>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Section */}
+      <section className="py-32 bg-[#F9F7F5]">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="text-center mb-20 max-w-3xl mx-auto">
+            <div className="inline-block bg-[#FF6B6B]/10 text-[#FF6B6B] px-5 py-2 rounded-full font-black text-sm uppercase tracking-widest mb-6 border border-[#FF6B6B]/10">Our Creative Moments</div>
+            <h2 className="text-5xl md:text-6xl font-black text-[#1E293B] mb-8">Capturing the <span className="text-[#4D96FF]">Magic</span></h2>
+            <p className="text-xl text-[#1E293B]/60 font-medium">Take a peek into our studio where creativity knows no bounds and every child is a masterpiece.</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[gall1, gall2, gall3, gall4, gall5, gall6].map((img, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                whileHover={{ y: -10 }}
+                className={`relative group rounded-[40px] overflow-hidden shadow-card border-8 border-white aspect-square ${i % 2 === 0 ? "lg:mt-12" : ""}`}
+              >
+                <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                  <div className="text-white text-xl font-bold">Colors N Shades Moments</div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
