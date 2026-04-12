@@ -92,14 +92,14 @@ export default function HomePage() {
 
               <motion.h1
                 variants={fadeUp}
-                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold text-[#1E293B] leading-[0.95] mb-10 tracking-tighter"
+                className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-extrabold text-[#1E293B] leading-[0.95] mb-10 tracking-tighter"
               >
                 Sparking <span className="text-[#FF6B6B]">Creativity</span> in Every Child
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
-                className="text-2xl text-[#1E293B]/70 leading-relaxed mb-12 max-w-xl font-medium"
+                className="text-lg md:text-2xl text-[#1E293B]/70 leading-relaxed mb-12 max-w-xl font-medium"
               >
                 Colors N Shades is a creative hub where young minds explore art, master chess, and excel in academics through playful and professional learning.
               </motion.p>
@@ -193,8 +193,8 @@ export default function HomePage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div className="max-w-2xl">
-              <h2 className="text-4xl md:text-5xl font-extrabold mb-6">Explore Our <span className="text-[#4D96FF]">Creative Universe</span></h2>
-              <p className="text-xl text-[#1E293B]/60">From brushstrokes to chess moves, we provide a holistic environment for children to grow and learn.</p>
+              <h2 className="text-3xl md:text-5xl font-extrabold mb-6">Explore Our <span className="text-[#4D96FF]">Creative Universe</span></h2>
+              <p className="text-lg md:text-xl text-[#1E293B]/60">From brushstrokes to chess moves, we provide a holistic environment for children to grow and learn.</p>
             </div>
             <Button variant="outline" className="rounded-full border-[#1E293B]/10 font-bold" asChild>
               <Link to="/services">View All Services <ArrowRight className="ml-2 h-4 w-4" /></Link>
@@ -224,9 +224,9 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section className="py-32 bg-[#F9F7F5] overflow-hidden">
+      <section className="py-20 md:py-32 bg-[#F9F7F5] overflow-hidden">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -235,12 +235,12 @@ export default function HomePage() {
             >
               <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#6BCB77]/20 rounded-full blur-3xl"></div>
               <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-[#FF6B6B]/10 rounded-full blur-3xl"></div>
-              <div className="relative rounded-[50px] overflow-hidden shadow-2xl border-8 border-white transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+              <div className="relative rounded-[30px] md:rounded-[50px] overflow-hidden shadow-2xl border-8 border-white transform -rotate-3 hover:rotate-0 transition-transform duration-500">
                 <img src={aboutStudio} alt="Art Studio" className="w-full aspect-[4/3] object-cover" />
               </div>
               {/* Floating badges */}
-              <div className="absolute top-10 -right-8 bg-white p-6 rounded-3xl shadow-xl flex items-center gap-4 border border-[#1E293B]/5 animate-float">
-                <div className="w-12 h-12 bg-[#FFD93D] rounded-full flex items-center justify-center text-2xl">🏆</div>
+              <div className="absolute top-6 -right-4 md:top-10 md:-right-8 bg-white p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-xl flex items-center gap-3 md:gap-4 border border-[#1E293B]/5 animate-float">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-[#FFD93D] rounded-full flex items-center justify-center text-xl md:text-2xl">🏆</div>
                 <div>
                   <div className="font-bold text-[#1E293B]">10+ Years</div>
                   <div className="text-sm text-[#1E293B]/60 text-nowrap">Experience</div>
@@ -284,7 +284,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center mb-20 max-w-3xl mx-auto">
             <div className="inline-block bg-[#FF6B6B]/10 text-[#FF6B6B] px-5 py-2 rounded-full font-black text-sm uppercase tracking-widest mb-6 border border-[#FF6B6B]/10">Our Creative Moments</div>
-            <h2 className="text-5xl md:text-6xl font-black text-[#1E293B] mb-8">Capturing the <span className="text-[#4D96FF]">Magic</span></h2>
+            <h2 className="text-4xl md:text-6xl font-black text-[#1E293B] mb-8">Capturing the <span className="text-[#4D96FF]">Magic</span></h2>
             <p className="text-xl text-[#1E293B]/60 font-medium">Take a peek into our studio where creativity knows no bounds and every child is a masterpiece.</p>
           </div>
 
@@ -323,7 +323,7 @@ export default function HomePage() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.05 }}
-                  className="bg-[#F9F7F5] rounded-[40px] p-10 md:p-16 shadow-soft border border-[#1E293B]/5 text-center relative overflow-hidden"
+                  className="bg-[#F9F7F5] rounded-[30px] md:rounded-[40px] p-8 md:p-16 shadow-soft border border-[#1E293B]/5 text-center relative overflow-hidden"
                 >
                   <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#FF6B6B] to-[#FFD93D]"></div>
                   <div className="text-6xl text-[#FF6B6B]/20 mb-8 italic">"</div>
