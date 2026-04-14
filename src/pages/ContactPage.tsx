@@ -42,9 +42,9 @@ export default function ContactPage() {
   };
 
   const contactInfo = [
-    { icon: Phone, label: 'Phone', value: content.site.phone, color: '#FF6B6B' },
-    { icon: Mail, label: 'Email', value: content.site.email, color: '#4D96FF' },
-    { icon: MapPin, label: 'Address', value: content.site.address, color: '#6BCB77' },
+    { icon: Phone, label: 'Phone', value: content.site.phone, color: '#FF6B6B', link: `tel:${content.site.phone}` },
+    { icon: Mail, label: 'Email', value: content.site.email, color: '#4D96FF', link: `mailto:${content.site.email}` },
+    { icon: MapPin, label: 'Address', value: content.site.address, color: '#6BCB77', link: content.site.map_link },
     { icon: Clock, label: 'Timings', value: content.about.timings, color: '#FFD93D' },
   ];
 
@@ -127,30 +127,51 @@ export default function ContactPage() {
               <h2 className="text-3xl font-extrabold mb-12 text-[#1E293B]">Contact Details</h2>
               <div className="space-y-10">
                 {contactInfo.map((item) => (
-                  <div key={item.label} className="flex items-center gap-6 group">
-                    <div 
-                      className="w-16 h-16 rounded-[22px] flex items-center justify-center shrink-0 border-2 border-transparent group-hover:scale-110 transition-all duration-300 shadow-sm"
-                      style={{ backgroundColor: `${item.color}15`, color: item.color }}
-                    >
-                      <item.icon className="h-7 w-7" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-extrabold text-[#1E293B]/40 uppercase tracking-widest mb-1">{item.label}</p>
-                      <p className="text-lg font-bold text-[#1E293B] group-hover:text-[#FF6B6B] transition-colors">{item.value}</p>
-                    </div>
+                  <div key={item.label}>
+                    {item.link ? (
+                      <a href={item.link} target={item.label === 'Address' ? "_blank" : undefined} rel={item.label === 'Address' ? "noopener noreferrer" : undefined} className="flex items-center gap-6 group">
+                        <div 
+                          className="w-16 h-16 rounded-[22px] flex items-center justify-center shrink-0 border-2 border-transparent group-hover:scale-110 transition-all duration-300 shadow-sm"
+                          style={{ backgroundColor: `${item.color}15`, color: item.color }}
+                        >
+                          <item.icon className="h-7 w-7" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-extrabold text-[#1E293B]/40 uppercase tracking-widest mb-1">{item.label}</p>
+                          <p className="text-lg font-bold text-[#1E293B] group-hover:text-[#FF6B6B] transition-colors">{item.value}</p>
+                        </div>
+                      </a>
+                    ) : (
+                      <div className="flex items-center gap-6 group">
+                        <div 
+                          className="w-16 h-16 rounded-[22px] flex items-center justify-center shrink-0 border-2 border-transparent group-hover:scale-110 transition-all duration-300 shadow-sm"
+                          style={{ backgroundColor: `${item.color}15`, color: item.color }}
+                        >
+                          <item.icon className="h-7 w-7" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-extrabold text-[#1E293B]/40 uppercase tracking-widest mb-1">{item.label}</p>
+                          <p className="text-lg font-bold text-[#1E293B] group-hover:text-[#FF6B6B] transition-colors">{item.value}</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
 
               {/* Map Section */}
-              <div className="mt-16 rounded-[30px] overflow-hidden shadow-inner border-4 border-[#F9F7F5] bg-[#F9F7F5] relative h-64 group">
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-[#1E293B]/30 p-8 text-center">
-                  <MapPin className="h-12 w-12 mb-4 animate-bounce" />
-                  <p className="text-sm font-bold uppercase tracking-widest">Google Maps Location</p>
+              <a 
+                href={content.site.map_link} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="mt-16 rounded-[30px] overflow-hidden shadow-inner border-4 border-[#F9F7F5] bg-[#F9F7F5] relative h-64 group cursor-pointer block"
+              >
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-[#1E293B]/30 p-8 text-center group-hover:bg-[#FF6B6B]/5 transition-colors">
+                  <MapPin className="h-12 w-12 mb-4 animate-bounce group-hover:text-[#FF6B6B] transition-colors" />
+                  <p className="text-sm font-bold uppercase tracking-widest group-hover:text-[#FF6B6B] transition-colors">Open in Google Maps</p>
                   <p className="text-xs font-medium mt-2">Find us at {content.site.address}</p>
                 </div>
-                {/* Embed actual map here if needed */}
-              </div>
+              </a>
             </div>
           </motion.div>
         </div>

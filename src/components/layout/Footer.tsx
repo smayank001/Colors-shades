@@ -13,11 +13,11 @@ export function Footer() {
           {/* Brand & Description */}
           <div className="lg:col-span-1">
             <Link to="/" className="inline-block mb-8 group">
-              <img 
-                src={logoUrl} 
-                alt="Colors N Shades Logo" 
-                className="h-16 w-auto rounded-2xl shadow-sm group-hover:scale-105 transition-transform duration-300" 
-              />
+            <img 
+              src={logoUrl} 
+              alt="Colors N Shades Logo" 
+              className="h-20 w-auto rounded-2xl shadow-sm group-hover:scale-105 transition-transform duration-300" 
+            />
             </Link>
             <p className="text-[#1E293B]/60 text-base leading-relaxed font-medium mb-8">
               {content.site.description.slice(0, 150)}...

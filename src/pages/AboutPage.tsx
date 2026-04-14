@@ -173,7 +173,7 @@ export default function AboutPage() {
               Enroll Now
             </Button>
             <Button variant="outline" size="xl" className="border-[#1E293B]/10 rounded-full px-12 py-8 font-black text-xl hover:bg-[#1E293B]/5">
-              Call +91 81433 65243
+              Call {content.site.phone}
             </Button>
           </div>
         </div>

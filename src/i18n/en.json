@@ -3,11 +3,12 @@
     "name": "Colors 'n' Shades",
     "tagline": "Art school for children from 4 to 12 years old",
     "description": "Nurturing creativity and imagination through structured art education. We provide a safe and inspiring environment where young artists can explore, experiment, and express themselves.",
-    "phone": "+91 98765 43210",
+    "phone": "081433 65243",
     "email": "info@colorsnshades.in",
-    "address": "123 Creative Lane, Koramangala, Bangalore 560034",
+    "address": "1st Floor, 16-11-469/27, beside State Bank of India, Moosarambagh, SBI Colony, Dilsukhnagar, Hyderabad, Telangana 500036",
     "cta_primary": "Sign up for a trial lesson",
-    "cta_secondary": "Explore our courses"
+    "cta_secondary": "Explore our courses",
+    "map_link": "https://maps.app.goo.gl/RCudJ84SUbEw1iWy6"
   },
   "nav": [
     { "label": "About", "path": "/about" },
@@ -35,10 +36,9 @@
     }
   },
   "testimonials": [
-    { "name": "Priya Sharma", "text": "My daughter has blossomed into a confident artist since joining Colors 'n' Shades. The teachers are incredible!", "role": "Parent" },
-    { "name": "Rajesh Kumar", "text": "The best art school in Bangalore. My son looks forward to every class and has won multiple competitions.", "role": "Parent" },
-    { "name": "Anita Desai", "text": "The curriculum is well-structured and age-appropriate. My kids learn something new every week.", "role": "Parent" },
-    { "name": "Vikram Patel", "text": "Colors 'n' Shades has been transformative for my shy daughter. She now expresses herself beautifully through art.", "role": "Parent" }
+    { "name": "sharanya ravichandra", "text": "I've learnt pencil shading from Shwetha Ma'am..She explains in detail and is very patient.I joined my Kid also ..Highly recommend Colors and Shades", "role": "Parent" },
+    { "name": "thakur darshini", "text": "Colours N Shades is the best institute for everyone to start from initial stage. From my three kids have joined for drawing with the help of Shweta ma'am they improved a lot", "role": "Parent" },
+    { "name": "sowjanya", "text": "I saw a significant improvement in my skills throughout the course,The curriculum was well-structured and engaging,I felt comfortable in experimenting and exploring new techniques", "role": "Student" }
   ],
   "about": {
     "mission": "At Colors 'n' Shades, we believe every child is born with creative potential. Our mission is to provide a structured yet playful environment where children aged 4 to 12 can discover and develop their artistic abilities.",
