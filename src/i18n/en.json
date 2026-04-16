@@ -1,7 +1,7 @@
 {
   "site": {
     "name": "Colors 'n' Shades",
-    "tagline": "Art school for children from 4 to 12 years old",
+    "tagline": "Art school for children from 6years to 17years kids & Women of all age group",
     "description": "Nurturing creativity and imagination through structured art education. We provide a safe and inspiring environment where young artists can explore, experiment, and express themselves.",
     "phone": "081433 65243",
     "email": "info@colorsnshades.in",
@@ -11,15 +11,33 @@
     "map_link": "https://maps.app.goo.gl/RCudJ84SUbEw1iWy6"
   },
   "nav": [
-    { "label": "About", "path": "/about" },
-    { "label": "Services", "path": "/services" },
-    { "label": "Events", "path": "/events" },
-    { "label": "Student Work", "path": "/student-work" },
-    { "label": "Achievements", "path": "/achievements" },
-    { "label": "Contact", "path": "/contact" }
+    {
+      "label": "About",
+      "path": "/about"
+    },
+    {
+      "label": "Services",
+      "path": "/services"
+    },
+    {
+      "label": "Events",
+      "path": "/events"
+    },
+    {
+      "label": "Student Work",
+      "path": "/student-work"
+    },
+    {
+      "label": "Achievements",
+      "path": "/achievements"
+    },
+    {
+      "label": "Contact",
+      "path": "/contact"
+    }
   ],
   "hero": {
-    "title": "Art school for children from 4 to 12 years old",
+    "title": "Art school for children from 6years to 17years kids & Women of all age group",
     "subtitle": "Where every child discovers their inner artist",
     "description": "Colors 'n' Shades provides a nurturing environment for young minds to explore drawing, painting, crafts, and more. Our experienced teachers guide each child on their unique creative journey."
   },
@@ -27,27 +45,61 @@
     "young": {
       "title": "Little Artists (4–6 years)",
       "description": "Playful introduction to colors, shapes, and textures through guided creative activities.",
-      "highlights": ["Color theory basics", "Finger painting", "Craft projects", "Story-based art"]
+      "highlights": [
+        "Color theory basics",
+        "Finger painting",
+        "Craft projects",
+        "Story-based art"
+      ]
     },
     "older": {
       "title": "Junior Masters (7–12 years)",
       "description": "Structured art education covering drawing techniques, painting styles, and mixed media.",
-      "highlights": ["Pencil sketching", "Watercolors & acrylics", "Oil pastels", "Portfolio building"]
+      "highlights": [
+        "Pencil sketching",
+        "Watercolors & acrylics",
+        "Oil pastels",
+        "Portfolio building"
+      ]
     }
   },
   "testimonials": [
-    { "name": "sharanya ravichandra", "text": "I've learnt pencil shading from Shwetha Ma'am..She explains in detail and is very patient.I joined my Kid also ..Highly recommend Colors and Shades", "role": "Parent" },
-    { "name": "thakur darshini", "text": "Colours N Shades is the best institute for everyone to start from initial stage. From my three kids have joined for drawing with the help of Shweta ma'am they improved a lot", "role": "Parent" },
-    { "name": "sowjanya", "text": "I saw a significant improvement in my skills throughout the course,The curriculum was well-structured and engaging,I felt comfortable in experimenting and exploring new techniques", "role": "Student" }
+    {
+      "name": "sharanya ravichandra",
+      "text": "I've learnt pencil shading from Shwetha Ma'am..She explains in detail and is very patient.I joined my Kid also ..Highly recommend Colors and Shades",
+      "role": "Parent"
+    },
+    {
+      "name": "thakur darshini",
+      "text": "Colours N Shades is the best institute for everyone to start from initial stage. From my three kids have joined for drawing with the help of Shweta ma'am they improved a lot",
+      "role": "Parent"
+    },
+    {
+      "name": "sowjanya",
+      "text": "I saw a significant improvement in my skills throughout the course,The curriculum was well-structured and engaging,I felt comfortable in experimenting and exploring new techniques",
+      "role": "Student"
+    }
   ],
   "about": {
-    "mission": "At Colors 'n' Shades, we believe every child is born with creative potential. Our mission is to provide a structured yet playful environment where children aged 4 to 12 can discover and develop their artistic abilities.",
+    "mission": "At Colors 'n' Shades, we believe every child is born with creative potential. Our mission is to provide a structured yet playful environment where children aged 6years to 17years kids & Women of all age group can discover and develop their artistic abilities.",
     "description": "Founded with a passion for art education, Colors 'n' Shades has been nurturing young artists for over a decade. Our experienced team of artists and educators create a warm, welcoming space where children feel free to explore, experiment, and express themselves through various art forms.",
-    "timings": "Monday to Saturday: 3:30 PM – 7:30 PM | Sunday: 10:00 AM – 1:00 PM",
+    "timings": "Monday to Sunday: Evening: 5 PM – 8 PM | Summer Camp: 10 AM – 1 PM",
     "teachers": [
-      { "name": "Meera Krishnan", "role": "Founder & Lead Artist", "bio": "With 15 years of experience in art education, Meera brings a unique blend of traditional and modern techniques to the classroom." },
-      { "name": "Arjun Nair", "role": "Drawing & Sketch Instructor", "bio": "A fine arts graduate with a gift for making complex techniques accessible to young learners." },
-      { "name": "Sneha Reddy", "role": "Crafts & Mixed Media", "bio": "Specializing in creative crafts, Sneha inspires children to think beyond conventional art forms." }
+      {
+        "name": "Meera Krishnan",
+        "role": "Founder & Lead Artist",
+        "bio": "With 15 years of experience in art education, Meera brings a unique blend of traditional and modern techniques to the classroom."
+      },
+      {
+        "name": "Arjun Nair",
+        "role": "Drawing & Sketch Instructor",
+        "bio": "A fine arts graduate with a gift for making complex techniques accessible to young learners."
+      },
+      {
+        "name": "Sneha Reddy",
+        "role": "Crafts & Mixed Media",
+        "bio": "Specializing in creative crafts, Sneha inspires children to think beyond conventional art forms."
+      }
     ]
   },
   "footer": {
