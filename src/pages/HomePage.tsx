@@ -12,9 +12,11 @@ import content from "@/i18n/en.json";
 import aboutStudio from "@/assets/about-studio.jpg";
 import summerImage from "@/assets/color-shadessummer.jpeg";
 import summerCampImage from "@/assets/color-shadessummercamp.jpeg";
-import hero1 from "@/assets/user_assets/students_thumbsup.jpg";
-import hero2 from "@/assets/user_assets/event_group.jpg";
-import hero3 from "@/assets/user_assets/students_working.jpg";
+import hero1 from "@/assets/hero-child-1.jpg";
+import hero2 from "@/assets/hero-child-2.jpg";
+import hero3 from "@/assets/hero-child-3.jpg";
+import hero4 from "@/assets/gallery/gallery3.png";
+import hero5 from "@/assets/gallery/gallery4.png";
 import gall1 from "@/assets/user_assets/studio_1.jpg";
 import gall2 from "@/assets/user_assets/student_sunset.jpg";
 import gall3 from "@/assets/user_assets/studio_collage.jpg";
@@ -38,7 +40,7 @@ export default function HomePage() {
   const [services, setServices] = useState<any[]>([]);
   const [heroIdx, setHeroIdx] = useState(0);
 
-  const heroImages = [hero1, hero2, hero3];
+  const heroImages = [hero1, hero2, hero3, hero4, hero5];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,12 +50,35 @@ export default function HomePage() {
   }, [heroImages.length]);
 
   useEffect(() => {
+    // Check both session and local storage to respect user preference
+    const hasBeenShown = sessionStorage.getItem("contact_popup_shown") || localStorage.getItem("contact_popup_shown");
+    
+    if (!hasBeenShown) {
+      console.log("Contact popup scheduled to open in 3 seconds...");
+      const timer = setTimeout(() => {
+        setEnquiryOpen(true);
+        console.log("Contact popup opened.");
+      }, 3000); // 3 seconds delay for premium feel
+      return () => clearTimeout(timer);
+    } else {
+      console.log("Contact popup already shown or closed.");
+    }
+  }, []);
+
+  useEffect(() => {
     getServices()
       .then((data) => {
         if (data) setServices(data.slice(0, 3));
       })
       .catch(console.error);
   }, []);
+
+  const handleCloseEnquiry = () => {
+    setEnquiryOpen(false);
+    sessionStorage.setItem("contact_popup_shown", "true");
+    // Also set localStorage as per requirement for permanent tracking if needed
+    localStorage.setItem("contact_popup_shown", "true");
+  };
 
   const testimonials = content.testimonials;
 
@@ -67,47 +92,69 @@ export default function HomePage() {
   return (
     <div className="relative overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center pt-20 pb-20 lg:pb-0 overflow-hidden bg-[#F9F7F5]">
-        {/* Decorative Blobs */}
-        <div className="blob w-[500px] h-[500px] bg-[#FF6B6B] -top-20 -left-20 opacity-10"></div>
-        <div className="blob w-[400px] h-[400px] bg-[#FFD93D] bottom-0 -right-20 opacity-10"></div>
-        <div className="blob w-[300px] h-[300px] bg-[#4D96FF] top-1/4 left-1/3 opacity-5"></div>
+      <section className="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden">
+        {/* Background Image Slider */}
+        <div className="absolute inset-0 z-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={heroIdx}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5 }}
+              className="absolute inset-0"
+            >
+              <img
+                src={heroImages[heroIdx]}
+                alt="Art background"
+                className="w-full h-full object-cover"
+              />
+              {/* Premium Gradient Overlays */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#1E293B]/90 via-[#1E293B]/60 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1E293B]/40 to-transparent"></div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-        {/* Floating Shapes */}
-        <FloatingShape color="#FF6B6B" size={100} top="15%" right="10%" delay={0} shape="circle" />
-        <FloatingShape color="#FFD93D" size={80} bottom="20%" left="5%" delay={1} shape="blob" />
-        <FloatingShape color="#4D96FF" size={60} top="25%" left="15%" delay={2} shape="circle" />
-        
-        <div className="container relative mx-auto px-4 lg:px-10 z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        {/* Floating Shapes - Adjusted for background contrast */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30 z-10">
+          <FloatingShape color="#FF6B6B" size={120} top="15%" right="10%" delay={0} shape="circle" />
+          <FloatingShape color="#FFD93D" size={100} bottom="20%" left="5%" delay={1} shape="blob" />
+          <FloatingShape color="#4D96FF" size={80} top="25%" left="15%" delay={2} shape="circle" />
+        </div>
+
+        <div className="container relative mx-auto px-4 lg:px-10 z-20">
+          <div className="max-w-4xl">
             {/* Left content */}
             <motion.div variants={stagger} initial="hidden" animate="visible">
               <motion.div
                 variants={fadeUp}
-                className="inline-flex items-center gap-2 bg-[#FF6B6B]/10 text-[#FF6B6B] rounded-full px-5 py-2 text-sm font-bold mb-6"
+                className="inline-flex items-center gap-2 bg-[#FF6B6B] text-white rounded-full px-6 py-2.5 text-sm font-black mb-10 shadow-xl"
               >
                 <Palette className="h-4 w-4" />
-                Art & Learning Institute
+                ART & LEARNING INSTITUTE
               </motion.div>
 
               <motion.h1
                 variants={fadeUp}
-                className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-extrabold text-[#1E293B] leading-[0.95] mb-10 tracking-tighter"
+                className="text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black text-white leading-[0.85] mb-12 tracking-tighter"
               >
-                Sparking <span className="text-[#FF6B6B]">Creativity</span> in Every Child
+                Sparking <br />
+                <span className="text-[#FFD93D] drop-shadow-2xl">Creativity</span> <br />
+                <span className="text-4xl md:text-6xl font-extrabold text-white/80 block mt-4 tracking-normal">in Every Child</span>
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
-                className="text-lg md:text-2xl text-[#1E293B]/70 leading-relaxed mb-12 max-w-xl font-medium"
+                className="text-xl md:text-3xl text-white/90 leading-relaxed mb-16 max-w-2xl font-medium"
               >
                 Colors N Shades is a creative hub where young minds explore art, master chess, and excel in academics through playful and professional learning.
               </motion.p>
 
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-6">
+              <motion.div variants={fadeUp} className="flex flex-wrap gap-8 items-center">
                 <Button
                   size="xl"
-                  className="bg-gradient-to-r from-[#FF6B6B] to-[#FFD93D] text-white border-0 hover:scale-105 transition-all duration-300 shadow-2xl rounded-full px-12 py-9 text-xl font-bold"
+                  className="bg-gradient-to-r from-[#FF6B6B] to-[#FFD93D] text-white border-0 hover:scale-105 transition-all duration-300 shadow-[0_20px_50px_rgba(255,107,107,0.3)] rounded-full px-16 py-10 text-2xl font-black"
                   onClick={() => setEnquiryOpen(true)}
                 >
                   Enroll Now
@@ -115,77 +162,37 @@ export default function HomePage() {
                 <Button
                   variant="outline"
                   size="xl"
-                  className="border-[#1E293B]/10 text-[#1E293B] hover:bg-[#1E293B]/5 rounded-full px-12 py-9 text-xl font-bold shadow-sm"
+                  className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white hover:text-[#1E293B] rounded-full px-16 py-10 text-2xl font-black shadow-xl transition-all"
                   asChild
                 >
                   <Link to="/services">View Courses</Link>
                 </Button>
               </motion.div>
-            </motion.div>
 
-            {/* Right Slider */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1 }}
-              className="relative hidden lg:block h-[700px]"
-            >
-              <div className="absolute inset-0 bg-[#FFD93D]/10 rounded-[60px] blur-3xl transform rotate-6 scale-90"></div>
-              <div className="relative w-full h-full rounded-[60px] overflow-hidden border-[12px] border-white shadow-2xl z-10">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={heroIdx}
-                    src={heroImages[heroIdx]}
-                    initial={{ opacity: 0, scale: 1.1 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.8 }}
-                    className="w-full h-full object-cover"
+              {/* Slider Dots */}
+              <div className="flex gap-4 mt-20">
+                {heroImages.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setHeroIdx(i)}
+                    className={`h-2.5 rounded-full transition-all duration-500 ${i === heroIdx ? "bg-[#FFD93D] w-12 shadow-[0_0_15px_rgba(255,217,61,0.5)]" : "bg-white/30 w-2.5 hover:bg-white/50"}`}
                   />
-                </AnimatePresence>
-                
-                {/* Overlay Text */}
-                <div className="absolute bottom-10 left-10 right-10 bg-white/90 backdrop-blur-md p-8 rounded-[40px] border border-white/20 shadow-xl">
-                  <div className="flex items-center gap-4 mb-2">
-                    <div className="w-12 h-1 bg-[#FF6B6B] rounded-full"></div>
-                    <span className="text-sm font-black uppercase tracking-[0.2em] text-[#FF6B6B]">Featured Work</span>
-                  </div>
-                  <h3 className="text-3xl font-black text-[#1E293B]">Nurturing Young Talent</h3>
-                </div>
-
-                {/* Slider Controls */}
-                <div className="absolute top-1/2 -translate-y-1/2 left-6 right-6 flex justify-between z-20">
-                  <button 
-                    onClick={() => setHeroIdx((i) => (i - 1 + heroImages.length) % heroImages.length)}
-                    className="w-14 h-14 bg-white/20 hover:bg-white text-white hover:text-[#1E293B] backdrop-blur-md rounded-full flex items-center justify-center transition-all border border-white/30"
-                  >
-                    <ChevronLeft className="h-8 w-8" />
-                  </button>
-                  <button 
-                    onClick={() => setHeroIdx((i) => (i + 1) % heroImages.length)}
-                    className="w-14 h-14 bg-white/20 hover:bg-white text-white hover:text-[#1E293B] backdrop-blur-md rounded-full flex items-center justify-center transition-all border border-white/30"
-                  >
-                    <ChevronRight className="h-8 w-8" />
-                  </button>
-                </div>
-
-                <div className="absolute top-8 right-8 flex gap-2 z-20">
-                  {heroImages.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setHeroIdx(i)}
-                      className={`h-2.5 rounded-full transition-all duration-500 ${i === heroIdx ? "bg-white w-8 shadow-md" : "bg-white/40 w-2.5"}`}
-                    />
-                  ))}
-                </div>
+                ))}
               </div>
-              
-              {/* Floating accents */}
-              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-[#4D96FF] rounded-full flex items-center justify-center text-5xl shadow-2xl border-8 border-white z-20 animate-float">🎨</div>
-              <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#6BCB77] rounded-full flex items-center justify-center text-4xl shadow-2xl border-4 border-white z-20 animate-pulse">🌟</div>
             </motion.div>
           </div>
         </div>
+
+        {/* Bottom Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/50"
+        >
+          <span className="text-xs font-bold uppercase tracking-[0.3em]">Explore</span>
+          <div className="w-1 h-12 bg-gradient-to-b from-white to-transparent rounded-full"></div>
+        </motion.div>
       </section>
 
       {/* Services Preview */}
@@ -299,7 +306,7 @@ export default function HomePage() {
                 whileHover={{ y: -10 }}
                 className={`relative group rounded-[40px] overflow-hidden shadow-card border-8 border-white aspect-square ${i % 2 === 0 ? "lg:mt-12" : ""}`}
               >
-                <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={img} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
                   <div className="text-white text-xl font-bold">Colors N Shades Moments</div>
                 </div>
@@ -314,7 +321,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4 lg:px-8 text-center">
           <div className="inline-block bg-[#4D96FF]/10 text-[#4D96FF] px-4 py-2 rounded-full font-bold mb-6">Happy Parents</div>
           <h2 className="text-4xl md:text-5xl font-extrabold mb-16">What Parents & Students Say</h2>
-          
+
           <div className="max-w-4xl mx-auto">
             <div className="relative px-12">
               <AnimatePresence mode="wait">
@@ -341,13 +348,13 @@ export default function HomePage() {
               </AnimatePresence>
 
               {/* Navigation */}
-              <button 
+              <button
                 onClick={prevTest}
                 className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full shadow-lg border border-[#1E293B]/5 flex items-center justify-center text-[#1E293B] hover:bg-[#FF6B6B] hover:text-white transition-all z-20 group"
               >
                 <ChevronLeft className="w-8 h-8 group-active:scale-90" />
               </button>
-              <button 
+              <button
                 onClick={nextTest}
                 className="absolute right-0 top-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full shadow-lg border border-[#1E293B]/5 flex items-center justify-center text-[#1E293B] hover:bg-[#FF6B6B] hover:text-white transition-all z-20 group"
               >
@@ -386,8 +393,8 @@ export default function HomePage() {
                 Join our community of young artists and learners today. Book a free trial lesson and see the magic happen!
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <Button 
-                  size="xl" 
+                <Button
+                  size="xl"
                   className="bg-[#FF6B6B] text-white hover:bg-[#FF6B6B]/90 rounded-full px-12 py-8 text-xl font-bold shadow-2xl transition-all hover:scale-105"
                   onClick={() => setEnquiryOpen(true)}
                 >
@@ -395,7 +402,7 @@ export default function HomePage() {
                 </Button>
                 <div className="flex items-center gap-4 text-white/80">
                   <div className="flex -space-x-4">
-                    {[1,2,3,4].map(i => (
+                    {[1, 2, 3, 4].map(i => (
                       <div key={i} className="w-12 h-12 rounded-full border-2 border-[#1E293B] bg-[#4D96FF] flex items-center justify-center text-xl shadow-lg">👤</div>
                     ))}
                   </div>
@@ -407,7 +414,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <EnquiryModal open={enquiryOpen} onClose={() => setEnquiryOpen(false)} />
+      <EnquiryModal open={enquiryOpen} onClose={handleCloseEnquiry} />
     </div>
   );
 }

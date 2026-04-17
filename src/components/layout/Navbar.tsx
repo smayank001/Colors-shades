@@ -30,10 +30,10 @@ export function Navbar() {
       aria-label="Main navigation"
     >
       <div 
-        className={`container mx-auto flex items-center justify-between transition-all duration-500 rounded-[30px] px-6 lg:px-10 h-20 ${
+        className={`container mx-auto flex items-center justify-between transition-all duration-500 rounded-[30px] px-6 lg:px-10 h-24 ${
           scrolled 
             ? "bg-white/80 backdrop-blur-xl shadow-card border border-white/20" 
-            : "bg-white shadow-sm border border-[#1E293B]/5"
+            : "bg-transparent border-0"
         }`}
       >
         {/* Logo Left */}
@@ -44,12 +44,16 @@ export function Navbar() {
           <img 
             src={logoUrl} 
             alt="Colors N Shades" 
-            className="h-20 lg:h-28 w-auto object-contain transition-all duration-500 group-hover:scale-105 group-hover:rotate-2"
+            className={`h-20 lg:h-32 w-auto object-contain transition-all duration-500 group-hover:scale-105 group-hover:rotate-2 ${!scrolled && "brightness-0 invert"}`}
           />
         </Link>
 
         {/* Desktop Nav Center */}
-        <div className="hidden lg:flex items-center gap-1 bg-[#F9F7F5]/50 p-1.5 rounded-full border border-[#1E293B]/5">
+        <div className={`hidden lg:flex items-center gap-1 p-1.5 rounded-full border transition-all duration-500 ${
+          scrolled 
+            ? "bg-[#F9F7F5]/50 border-[#1E293B]/5" 
+            : "bg-white/10 backdrop-blur-md border-white/20"
+        }`}>
           {content.nav.map((item) => (
             <Link
               key={item.path}
@@ -57,7 +61,9 @@ export function Navbar() {
               className={`relative px-6 py-2.5 text-sm font-extrabold uppercase tracking-widest transition-all duration-300 rounded-full ${
                 location.pathname === item.path
                   ? "text-white bg-[#FF6B6B] shadow-sm"
-                  : "text-[#1E293B]/60 hover:text-[#FF6B6B] hover:bg-white"
+                  : scrolled 
+                    ? "text-[#1E293B]/60 hover:text-[#FF6B6B] hover:bg-white"
+                    : "text-white/80 hover:text-white hover:bg-white/10"
               }`}
             >
               {item.label}
@@ -68,7 +74,11 @@ export function Navbar() {
         {/* Action Button Right */}
         <div className="hidden lg:flex items-center gap-4">
           <Button 
-            className="bg-[#1E293B] text-white hover:bg-[#FF6B6B] transition-all duration-500 rounded-full px-8 h-12 font-extrabold text-xs uppercase tracking-widest shadow-sm hover:shadow-hover border-0" 
+            className={`transition-all duration-500 rounded-full px-8 h-12 font-extrabold text-xs uppercase tracking-widest shadow-sm hover:shadow-hover border-0 ${
+              scrolled 
+                ? "bg-[#1E293B] text-white hover:bg-[#FF6B6B]" 
+                : "bg-white text-[#1E293B] hover:bg-[#FFD93D]"
+            }`} 
             asChild
           >
             <Link to="/contact">Join Class</Link>
@@ -78,7 +88,11 @@ export function Navbar() {
         {/* Mobile menu button */}
         <button
           className={`lg:hidden p-3 rounded-2xl transition-all duration-300 ${
-            mobileOpen ? 'bg-[#FF6B6B] text-white' : 'bg-[#F9F7F5] text-[#1E293B] hover:bg-[#FF6B6B]/10 hover:text-[#FF6B6B]'
+            mobileOpen 
+              ? 'bg-[#FF6B6B] text-white' 
+              : scrolled 
+                ? 'bg-[#F9F7F5] text-[#1E293B] hover:bg-[#FF6B6B]/10 hover:text-[#FF6B6B]'
+                : 'bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white/20'
           }`}
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
